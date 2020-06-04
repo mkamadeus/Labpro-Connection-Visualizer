@@ -1,26 +1,71 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import {
+  Box,
+  Container,
+  Drawer,
+  AppBar,
+  Toolbar,
+  IconButton,
+  List,
+  ListItem,
+  ListItemIcon,
+  Divider,
+  ListItemText,
+} from "@material-ui/core";
+import MenuIcon from "@material-ui/icons/Menu";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isDrawerOpen: false,
+    };
+  }
+
+  render() {
+    return (
+      <Container>
+        <AppBar>
+          <Toolbar>
+            <IconButton
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              onClick={() => {
+                this.setState({ isDrawerOpen: true });
+              }}
+            >
+              <MenuIcon />
+            </IconButton>
+          </Toolbar>
+        </AppBar>
+        <Drawer
+          anchor={"left"}
+          open={this.state.isDrawerOpen}
+          onClose={() => {
+            this.setState({ isDrawerOpen: false });
+          }}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+          <Box>
+            <List>
+              {["Pisang", "Goreng", "Tepung"].map((val) => {
+                return (
+                  <div key={"drawer_item_" + val}>
+                    <ListItem>
+                      <ListItemIcon>
+                        <MenuIcon />
+                      </ListItemIcon>
+                      <ListItemText primary={val} />
+                    </ListItem>
+                    <Divider />
+                  </div>
+                );
+              })}
+            </List>
+          </Box>
+        </Drawer>
+        <div></div>
+      </Container>
+    );
+  }
 }
-
-export default App;
