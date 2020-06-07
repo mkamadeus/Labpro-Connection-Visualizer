@@ -1,10 +1,14 @@
-interface CitizenData {
-  id: number;
+export interface CitizenData {
+  id: string;
   name: string;
   element: ElementBending;
 }
 
-enum ElementBending {
+export interface CitizenDataWithFriends extends CitizenData {
+  friends: CitizenData[];
+}
+
+export enum ElementBending {
   water = 'water',
   earth = 'earth',
   fire = 'fire',
