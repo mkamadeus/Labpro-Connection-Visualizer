@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Container,
@@ -12,58 +12,62 @@ import {
 import MenuIcon from '@material-ui/icons/Menu';
 import NavigationBarComponent from '../components/NavigationBarComponent';
 import GraphComponent from '../components/GraphComponent';
+import CitizenInformationComponent from '../components/CitizenInformationComponent';
+import { CitizenDataWithFriends, ElementBending } from '../api/citizen';
 
-interface AppProps {}
-interface AppState {
-  isDrawerOpen: boolean;
-}
+export default function App() {
+  const [isDrawerOpen, setDrawerOpen] = useState<boolean>(false);
+  const [selectedNode, setSelectedNode] = useState<CitizenDataWithFriends>({
+    id: '',
+    name: '',
+    element: ElementBending.water,
+    friends: [],
+  } as CitizenDataWithFriends);
 
-export default class App extends React.Component<AppProps, AppState> {
-  constructor(props: AppProps) {
-    super(props);
-    this.state = {
-      isDrawerOpen: false,
-    };
-  }
-
-  render() {
-    return (
-      <>
-        <NavigationBarComponent
-          onClick={() => {
-            this.setState({ isDrawerOpen: true });
-          }}
-        />
-        <Container>
-          <GraphComponent />
-          <Drawer
-            anchor={'left'}
-            open={this.state.isDrawerOpen}
-            onClose={() => {
-              this.setState({ isDrawerOpen: false });
-            }}
-          >
-            <Box>
-              <List>
-                {['Pisang', 'Goreng', 'Tepung'].map((val) => {
-                  return (
-                    <div key={'drawer_item_' + val}>
-                      <ListItem>
-                        <ListItemIcon>
-                          <MenuIcon />
-                        </ListItemIcon>
-                        <ListItemText primary={val} />
-                      </ListItem>
-                      <Divider />
-                    </div>
-                  );
-                })}
-              </List>
-            </Box>
-          </Drawer>
-          <div></div>
-        </Container>
-      </>
-    );
-  }
+  return (
+    <>
+      <NavigationBarComponent
+        onClick={() => {
+          setDrawerOpen(true);
+        }}
+      />
+      <Container>
+        <Box display={'flex'} flexDirection={'row'} width={'100%'}>
+          <GraphComponent
+            onClickNode={(node: CitizenDataWithFriends) =>
+              setSelectedNode(node)
+            }
+            nodeId={'1'}
+          />
+          <CitizenInformationComponent node={selectedNode} />
+        </Box>
+        <div></div>
+      </Container>
+      <Drawer
+        anchor={'left'}
+        open={isDrawerOpen}
+        onClose={() => {
+          setDrawerOpen(false);
+        }}
+      >
+        <Box>
+          <List>
+            {['Pisang', 'Goreng', 'Tepung'].map((val) => {
+              return (
+                <div key={'drawer_item_' + val}>
+                  <ListItem>
+                    <ListItemIcon>
+                      <MenuIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={val} />
+                  </ListItem>
+                  <Divider />
+                </div>
+              );
+            })}
+          </List>
+        </Box>
+      </Drawer>
+    </>
+  );
 }
