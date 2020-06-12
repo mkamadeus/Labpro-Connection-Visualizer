@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   Box,
   Container,
@@ -8,66 +8,54 @@ import {
   ListItemIcon,
   Divider,
   ListItemText,
+  Paper,
+  Grid,
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
+import SearchBar from '../components/SearchBar';
 import NavigationBarComponent from '../components/NavigationBarComponent';
 import GraphComponent from '../components/GraphComponent';
 import CitizenInformationComponent from '../components/CitizenInformationComponent';
-import { CitizenDataWithFriends, ElementBending } from '../api/citizen';
+import SuspectList from '../components/SuspectList';
+import { CitizenData, ElementBending } from '../api/citizen';
 
 export default function App() {
-  const [isDrawerOpen, setDrawerOpen] = useState<boolean>(false);
-  const [selectedNode, setSelectedNode] = useState<CitizenDataWithFriends>({
+  const [selectedNode, setSelectedNode] = useState<CitizenData>({
     id: '',
     name: '',
     element: ElementBending.water,
     friends: [],
-  } as CitizenDataWithFriends);
+  } as CitizenData);
 
   return (
     <>
-      <NavigationBarComponent
-        onClick={() => {
-          setDrawerOpen(true);
-        }}
-      />
-      <Container>
-        <Box display={'flex'} flexDirection={'row'} width={'100%'}>
-          <GraphComponent
-            onClickNode={(node: CitizenDataWithFriends) =>
-              setSelectedNode(node)
-            }
-            nodeId={'1'}
-          />
-          <CitizenInformationComponent node={selectedNode} />
+      <Box display={'flex'} flexDirection={'row'} width={'100%'}>
+        <Box width={'100%'} height={'100vh'} bgcolor={'red'} p={'1em'}>
+          <div>lol</div>
         </Box>
-        <div></div>
-      </Container>
-      <Drawer
-        anchor={'left'}
-        open={isDrawerOpen}
-        onClose={() => {
-          setDrawerOpen(false);
-        }}
-      >
-        <Box>
-          <List>
-            {['Pisang', 'Goreng', 'Tepung'].map((val) => {
-              return (
-                <div key={'drawer_item_' + val}>
-                  <ListItem>
-                    <ListItemIcon>
-                      <MenuIcon />
-                    </ListItemIcon>
-                    <ListItemText primary={val} />
-                  </ListItem>
-                  <Divider />
-                </div>
-              );
-            })}
-          </List>
+        <Box
+          display={'flex'}
+          flexDirection={'column'}
+          width={'100%'}
+          height={'100vh'}
+          p={'2em'}
+        >
+          <Box p={'1em'}>
+            <SearchBar />
+          </Box>
+          <Box display={'flex'} flex={'1 1 auto'} p={'1em'}>
+            <Grid container spacing={2}>
+              <Grid item sm={12} md={6}>
+                <CitizenInformationComponent node={selectedNode} />
+              </Grid>
+              <Grid item sm={12} md={6}>
+                <SuspectList />
+              </Grid>
+            </Grid>
+          </Box>
+          {/* <div style={{ flex: '1 1 auto', backgroundColor: 'red' }}></div> */}
         </Box>
-      </Drawer>
+      </Box>
     </>
   );
 }

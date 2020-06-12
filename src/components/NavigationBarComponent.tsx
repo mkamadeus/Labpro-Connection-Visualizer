@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
-import { AppBar, Toolbar, IconButton } from '@material-ui/core';
+import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  Typography,
+  Box,
+} from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
+import SearchBarComponent from './SearchBar';
 
 interface NavigationBarComponentProps {
   onClick: Function;
@@ -23,6 +30,12 @@ export default class NavigationBarComponent extends Component<
           >
             <MenuIcon />
           </IconButton>
+          <Typography variant="subtitle1" component="h1">
+            Suspect Expander
+          </Typography>
+          <Box px={4}>
+            <SearchBarComponent />
+          </Box>
         </Toolbar>
       </AppBar>
     );
