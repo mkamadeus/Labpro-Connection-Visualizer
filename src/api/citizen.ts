@@ -31,11 +31,13 @@ export const ElementColors = {
  * Make a GET request to https://avatar.labpro.dev/friends/<id> to get citizen data.
  * @param id The id of citizen requested from the API
  */
-export const getCitizenData = async (id: string): Promise<CitizenData> => {
+export const getCitizenData = async (
+  id: string
+): Promise<Required<CitizenData>> => {
   return new Promise((resolve, reject) => {
     axios.get(`https://avatar.labpro.dev/friends/${id}`).then(
       (response) => {
-        resolve(response.data.payload as CitizenData);
+        resolve(response.data.payload as Required<CitizenData>);
       },
       (error) => {
         reject(error);

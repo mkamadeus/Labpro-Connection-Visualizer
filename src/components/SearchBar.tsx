@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { InputBase, Theme } from '@material-ui/core';
 import { makeStyles, createStyles, fade } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
+import SearchContext from '../context/SearchContext';
 
 const useStyles = makeStyles(
   ({ shape, palette, spacing, transitions, shadows }: Theme) =>
@@ -40,13 +41,17 @@ const useStyles = makeStyles(
         paddingLeft: `calc(1em + ${spacing(4)}px)`,
         transition: transitions.create('width'),
         width: '100%',
-        fontSize: '1.3em',
+        // fontSize: '1.3em',
       },
     })
 );
 
 const SearchBar = () => {
   const classes = useStyles();
+  const { setQuery } = useContext(SearchContext);
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery!(event.target.value);
+  };
 
   return (
     <div className={classes.search}>
@@ -54,7 +59,12 @@ const SearchBar = () => {
         <SearchIcon />
       </div>
       <InputBase
-        classes={{ root: classes.inputRoot, input: classes.inputInput }}
+        placeholder={'Search for ID...'}
+        classes={{
+          root: classes.inputRoot,
+          input: classes.inputInput,
+        }}
+        onChange={onChange}
       />
     </div>
   );

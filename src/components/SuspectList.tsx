@@ -1,26 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import {
-  Checkbox,
-  FormControlLabel,
-  Card,
-  CardContent,
-  Typography,
-  List,
-  ListItem,
-  ListItemAvatar,
-  Avatar,
-  ListItemText,
-  Button,
-  Box,
-} from '@material-ui/core';
+import React from 'react';
+import { Typography, Button, Box } from '@material-ui/core';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import {
-  CitizenData,
-  ElementBending,
-  getCitizenData,
-  ElementColors,
-} from '../api/citizen';
-import axios from 'axios';
+import SuspectListItems from '../components/SuspectListItems';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -37,42 +18,6 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   })
 );
-
-const SuspectListItems = () => {
-  // States
-  const [data, setCitizenData] = useState<CitizenData[]>([]);
-
-  useEffect(() => {
-    async function getFriends() {
-      await getCitizenData('1').then((response: CitizenData) => {
-        setCitizenData(response?.friends as CitizenData[]);
-      });
-    }
-    getFriends();
-  }, []);
-
-  return (
-    <List style={{ flex: '1 1 auto', overflowY: 'scroll', height: '0px' }}>
-      {data.map((citizen: CitizenData) => {
-        return (
-          <ListItem key={`citizen_${citizen.id}`}>
-            <ListItemAvatar>
-              <Avatar
-                style={{ backgroundColor: ElementColors[citizen.element] }}
-              >
-                {citizen.name[0]}
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText
-              primary={citizen.name}
-              secondary={`ID: #${citizen.id}`}
-            />
-          </ListItem>
-        );
-      })}
-    </List>
-  );
-};
 
 const SuspectList = () => {
   // Stylesheet
