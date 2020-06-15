@@ -3,8 +3,10 @@ import { Graph as D3Graph } from 'react-d3-graph';
 import { CitizenGraphData, CitizenNode, CitizenLink } from '../api/graph';
 import { getCitizenData, CitizenData, ElementColors } from '../api/citizen';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import GraphContext from '../context/GraphContext';
+import { GraphContext } from '../context/GraphContext';
+import { LoadingContext } from '../context/LoadingContext';
 
+// Stylesheet definition
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     graphRoot: {
@@ -19,40 +21,32 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-// Get color from TS definition
-
+/**
+ * GraphComponent Props Definition.
+ */
 interface GraphComponentProps {
   onClickNode: (node: CitizenData) => void;
   nodeId: string;
   graphData: CitizenGraphData;
 }
 
+/**
+ * GraphComponent Component.
+ */
 const GraphComponent = ({ nodeId, onClickNode }: GraphComponentProps) => {
   // Stylesheet
   const classes = useStyles();
-  const { graphNodes, graphLinks, loading, setLoading } = useContext(
-    GraphContext
-  );
+  const { graphNodes, graphLinks } = useContext(GraphContext);
+  const { loading } = useContext(LoadingContext);
 
-  const [graphData, setGraphData] = useState<CitizenGraphData>({
-    nodes: graphNodes,
-    links: graphLinks,
-  } as CitizenGraphData);
-
-  console.log(graphData);
-
-  // useEffect(() => {
-  //   setGraphData({
-  //     nodes: graphNodes,
-  //     links: graphLinks,
-  //   } as CitizenGraphData);
-  // }, []);
-
-  return loading ? (
+  return !loading ? (
     <div className={classes.graphRoot}>
       <D3Graph
         id={'graph'}
-        data={graphData}
+        data={{
+          nodes: graphNodes as CitizenNode[],
+          links: graphLinks as CitizenLink[],
+        }}
         config={{
           height: 600,
           width: 600,

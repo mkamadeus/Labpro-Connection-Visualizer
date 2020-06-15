@@ -2,21 +2,22 @@ import React, { useContext } from 'react';
 import { Button } from '@material-ui/core';
 import SearchContext from '../context/SearchContext';
 import { getCitizenData, CitizenData } from '../api/citizen';
-import GraphContext from '../context/GraphContext';
+import { GraphContext } from '../context/GraphContext';
 import { ElementColors } from '../api/citizen';
+import { LoadingContext } from '../context/LoadingContext';
 
 const SearchButton = () => {
   const { query } = useContext(SearchContext);
+  const { setLoading } = useContext(LoadingContext);
   const {
     graphNodes,
     graphLinks,
-    setGraphNodes,
-    setGraphLinks,
-    setLoading,
+    graphNodesDispatcher,
+    graphLinksDispatcher,
   } = useContext(GraphContext);
 
   const onClick = async () => {
-    setLoading!(false);
+    setLoading!(true);
     await getCitizenData(query as string)
       .then((response: Required<CitizenData>) => {
         let nodes = graphNodes;
@@ -39,12 +40,16 @@ const SearchButton = () => {
             target: response.friends[i].id,
           });
         }
-        setGraphNodes!(nodes);
-        setGraphLinks!(links);
-        console.log(graphNodes, graphLinks);
-        setLoading!(true);
+        graphNodesDispatcher!({ type: 'ADD_NODES', nodes: nodes });
+        graphLinksDispatcher!({ type: 'ADD_LINKS', links: links });
       })
-      .catch((error) => {});
+      .then(() => {
+        console.log(graphNodes, graphLinks);
+        setLoading!(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
