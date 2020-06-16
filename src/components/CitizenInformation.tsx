@@ -11,40 +11,60 @@ import {
 } from '@material-ui/core';
 import { CitizenData, ElementColors } from '../api/citizen';
 import SuspectContext from '../context/SuspectContext';
+import { SelectedNodeContext } from '../context/SelectedNodeContext';
 
 interface CitizenInformationProps {
-  node: CitizenData;
+  selectedNode: CitizenData;
 }
 
-const colormap = ElementColors;
-
-const CitizenInformation = ({ node }: CitizenInformationProps) => {
+const CitizenInformation = () => {
   const { data, addCitizenData } = useContext(SuspectContext);
+  const { selectedNode } = useContext(SelectedNodeContext);
 
-  return (
+  const chipSorting = (x: CitizenData, y: CitizenData) => {
+    if (x.id > y.id) return -1;
+    else if (x.id < y.id) return 1;
+    else return 0;
+  };
+
+  return !!selectedNode ? (
     <Card
       style={{
         width: '100%',
       }}
     >
-      <CardHeader
-        avatar={<Avatar aria-label="element">F</Avatar>}
-        title={node.name || 'Name you select will show up here.'}
-        subheader={`ID: #${node.id || '???'}`}
-      />
       <CardContent>
-        <Button
-          variant="contained"
-          fullWidth
-          onClick={() => {
-            console.log(node);
-            addCitizenData(node);
-            console.log('test');
-          }}
-          color="primary"
-        >
-          {data.has(node) ? 'Remove from List' : 'Add to List'}
-        </Button>
+        <Box display={'flex'} flexDirection={'column'} p={'1em'}>
+          <Box display={'flex'} flexDirection={'row'} alignItems={'center'}>
+            <Box p={'0.5em'}>
+              <Avatar
+                aria-label="element"
+                style={{ backgroundColor: ElementColors[selectedNode.element] }}
+              >
+                {selectedNode.name[0]}
+              </Avatar>
+            </Box>
+            <Box p={'0.5em'}>
+              <Box>{selectedNode.name}</Box>
+              <Box>
+                <Typography
+                  variant="subtitle1"
+                  color="textSecondary"
+                >{`ID: #${selectedNode.id}`}</Typography>
+              </Box>
+            </Box>
+          </Box>
+          <Button
+            variant="contained"
+            fullWidth
+            onClick={() => {
+              // setSelectedNode(selectedNode);
+            }}
+            color="primary"
+          >
+            {/* {data.has(selectedNode) ? 'Remove from List' : 'Add to List'} */}
+          </Button>
+        </Box>
         <Typography variant="body2" color="textPrimary" component="p">
           Known connection{'(s)'}:
         </Typography>
@@ -56,15 +76,17 @@ const CitizenInformation = ({ node }: CitizenInformationProps) => {
           my={1}
           width="100%"
         >
-          {node.friends?.map((value) => {
+          {selectedNode.friends?.sort(chipSorting).map((value) => {
             return (
               <Box p={0.5} key={`chip_${value.id}`}>
                 <Chip
                   label={`#${value.id} ${value.name}`}
                   clickable={true}
                   style={{
-                    backgroundColor: colormap[value.element],
+                    backgroundColor: ElementColors[value.element],
+                    color: '#fff',
                   }}
+                  size={'small'}
                 />
               </Box>
             );
@@ -72,7 +94,7 @@ const CitizenInformation = ({ node }: CitizenInformationProps) => {
         </Box>
       </CardContent>
     </Card>
-  );
+  ) : null;
 };
 
 export default CitizenInformation;

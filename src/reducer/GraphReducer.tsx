@@ -38,10 +38,18 @@ export const nodeReducer: GraphNodeReducer = (
   action: GraphNodesAction
 ) => {
   switch (action.type) {
-    case 'ADD_NODE':
-      return [...state, action.node as CitizenNode];
     case 'ADD_NODES':
-      return [...state, ...(action.nodes as CitizenNode[])];
+      let duplicated = [...state, ...(action.nodes as CitizenNode[])];
+      let resultMap = new Map();
+      let result: CitizenNode[] = [];
+      for (let i = 0; i < duplicated.length; i++) {
+        if (!resultMap.has(duplicated[i].id)) {
+          resultMap.set(duplicated[i].id, duplicated[i]);
+          result.push(duplicated[i]);
+        }
+      }
+
+      return result;
     default:
       return state;
   }
@@ -51,19 +59,35 @@ export const nodeReducer: GraphNodeReducer = (
  * The reducer function for CitizenLink[].
  * @param state The current state passed
  * @param action The action for the current state
- *
- * @beta
  */
 export const linkReducer: GraphLinkReducer = (
   state: CitizenLink[],
   action: GraphLinksAction
 ) => {
   switch (action.type) {
-    case 'ADD_LINK':
-      return [...state, action.link as CitizenLink];
     case 'ADD_LINKS':
-      return [...state, ...(action.links as CitizenLink[])];
+      let duplicated = [...state, ...(action.links as CitizenLink[])];
+      let resultMap = new Map();
+      let result = [];
+      for (let i = 0; i < duplicated.length; i++) {
+        if (!resultMap.has(`${duplicated[i].source},${duplicated[i].target}`)) {
+          resultMap.set(
+            `${duplicated[i].source},${duplicated[i].target}`,
+            duplicated[i]
+          );
+          result.push(duplicated[i]);
+        }
+      }
+      return result;
     default:
       return state;
   }
+};
+
+const getUnique = (arr: any[], comp: string) => {
+  return arr
+    .map((value) => value[comp])
+    .map((value, index, final) => final.indexOf(value) === index && index)
+    .filter((value) => arr[value])
+    .map((e) => arr[e]);
 };

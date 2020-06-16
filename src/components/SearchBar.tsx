@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { InputBase, Theme } from '@material-ui/core';
 import { makeStyles, createStyles, fade } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
-import SearchContext from '../context/SearchContext';
+import { SearchContext } from '../context/SearchContext';
 
 const useStyles = makeStyles(
   ({ shape, palette, spacing, transitions, shadows }: Theme) =>

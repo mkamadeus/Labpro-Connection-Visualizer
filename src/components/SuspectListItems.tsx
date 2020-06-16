@@ -25,9 +25,9 @@ const SuspectListItems = () => {
 
   const { data } = useContext(SuspectContext);
   const [citizenData, setCitizenData] = useState<CitizenData[]>([]);
-  useEffect(() => {
-    setCitizenData(Array.from(data));
-  }, [data]);
+  // useEffect(() => {
+  //   setCitizenData(Array.from(data));
+  // }, [data]);
 
   return (
     <List className={classes.listRoot}>

@@ -1,14 +1,16 @@
 import React, { useContext } from 'react';
 import { Button } from '@material-ui/core';
-import SearchContext from '../context/SearchContext';
+import { SearchContext } from '../context/SearchContext';
 import { getCitizenData, CitizenData } from '../api/citizen';
 import { GraphContext } from '../context/GraphContext';
 import { ElementColors } from '../api/citizen';
 import { LoadingContext } from '../context/LoadingContext';
+import { SelectedNodeContext } from '../context/SelectedNodeContext';
 
 const SearchButton = () => {
   const { query } = useContext(SearchContext);
   const { setLoading } = useContext(LoadingContext);
+  const { setSelectedNode } = useContext(SelectedNodeContext);
   const {
     graphNodes,
     graphLinks,
@@ -20,8 +22,8 @@ const SearchButton = () => {
     setLoading!(true);
     await getCitizenData(query as string)
       .then((response: Required<CitizenData>) => {
-        let nodes = graphNodes;
-        let links = graphLinks;
+        let nodes = [];
+        let links = [];
         nodes?.push({
           id: response.id,
           element: response.element,
@@ -42,6 +44,7 @@ const SearchButton = () => {
         }
         graphNodesDispatcher!({ type: 'ADD_NODES', nodes: nodes });
         graphLinksDispatcher!({ type: 'ADD_LINKS', links: links });
+        setSelectedNode!(response);
       })
       .then(() => {
         console.log(graphNodes, graphLinks);

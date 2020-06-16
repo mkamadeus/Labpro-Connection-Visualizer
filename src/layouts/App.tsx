@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useReducer } from 'react';
-import { Box, Grid } from '@material-ui/core';
+import { Box, Grid, Fade } from '@material-ui/core';
 import { CitizenData, ElementBending } from '../api/citizen';
 import SearchComponent from '../components/SearchComponent';
 import GraphComponent from '../components/GraphComponent';
@@ -8,73 +8,61 @@ import SuspectList from '../components/SuspectList';
 import SuspectContext from '../context/SuspectContext';
 import { GraphContextProvider } from '../context/GraphContext';
 import { LoadingContextProvider } from '../context/LoadingContext';
+import { SelectedNodeContextProvider } from '../context/SelectedNodeContext';
 import { CitizenNode, CitizenLink } from '../api/graph';
 
 export default function App() {
-  // States
-  const [selectedNode, setSelectedNode] = useState<CitizenData>();
-  const [data, setCitizenData] = useState<Set<CitizenData>>(
-    new Set<CitizenData>()
-  );
-
-  const addCitizenData = (citizen: CitizenData) => {
-    setCitizenData(data.add(citizen));
-  };
-
-  // useEffect for removing duplicates
-  useEffect(() => {});
-
   return (
     <GraphContextProvider>
       <LoadingContextProvider>
-        <Box display={'flex'} flexDirection={'row'} width={'100%'}>
-          <Box width={'100%'} height={'100vh'} bgcolor={'#eeeeee'} p={'1em'}>
-            <GraphComponent
-              nodeId={'1'}
-              onClickNode={(nodeId) => {
-                setSelectedNode(nodeId);
-              }}
-            />
-          </Box>
-          <Box
-            display={'flex'}
-            flexDirection={'column'}
-            width={'100%'}
-            height={'100vh'}
-            p={'2em'}
-          >
+        <SelectedNodeContextProvider>
+          <Box display={'flex'} flexDirection={'row'} width={'100%'}>
+            <Box width={'100%'} height={'100vh'} bgcolor={'#eeeeee'} p={'1em'}>
+              <GraphComponent
+                nodeId={'1'}
+                onClickNode={(nodeId) => {
+                  setSelectedNode(nodeId);
+                }}
+              />
+            </Box>
             <Box
               display={'flex'}
-              flexDirection={'row'}
-              alignItems={'center'}
-              p={'1em'}
+              flexDirection={'column'}
               width={'100%'}
-              mx={'-0.5em'}
+              height={'100vh'}
+              p={'2em'}
             >
-              <SearchComponent />
-            </Box>
-            <Box display={'flex'} flex={'1 1 auto'} p={'1em'}>
-              <SuspectContext.Provider
+              <Box
+                display={'flex'}
+                flexDirection={'row'}
+                alignItems={'center'}
+                p={'1em'}
+                width={'100%'}
+                mx={'-0.5em'}
+              >
+                <SearchComponent />
+              </Box>
+              <Box display={'flex'} flex={'1 1 auto'} p={'1em'}>
+                {/* <SuspectContext.Provider
                 value={{
                   data,
                   addCitizenData,
                 }}
-              >
+              > */}
                 <Grid container spacing={2}>
                   <Grid item sm={12} md={6}>
-                    {selectedNode ? (
-                      <CitizenInformation node={selectedNode} />
-                    ) : null}
+                    <CitizenInformation />
                   </Grid>
                   <Grid item sm={12} md={6}>
                     <SuspectList />
                   </Grid>
                 </Grid>
-              </SuspectContext.Provider>
+                {/* </SuspectContext.Provider> */}
+              </Box>
+              {/* <div style={{ flex: '1 1 auto', backgroundColor: 'red' }}></div> */}
             </Box>
-            {/* <div style={{ flex: '1 1 auto', backgroundColor: 'red' }}></div> */}
           </Box>
-        </Box>
+        </SelectedNodeContextProvider>
       </LoadingContextProvider>
     </GraphContextProvider>
   );
