@@ -83,11 +83,3 @@ export const linkReducer: GraphLinkReducer = (
       return state;
   }
 };
-
-const getUnique = (arr: any[], comp: string) => {
-  return arr
-    .map((value) => value[comp])
-    .map((value, index, final) => final.indexOf(value) === index && index)
-    .filter((value) => arr[value])
-    .map((e) => arr[e]);
-};

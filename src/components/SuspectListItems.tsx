@@ -8,7 +8,7 @@ import {
 } from '@material-ui/core';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { CitizenData, ElementColors } from '../api/citizen';
-import SuspectContext from '../context/SuspectContext';
+import { SuspectContext } from '../context/SuspectContext';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -20,38 +20,35 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
+const listItems = (suspectMap: { [key: string]: CitizenData }) => {
+  let suspects: CitizenData[] = [];
+  for (let i = 0; i < Object.keys(suspectMap!).length; i++) {
+    suspects.push(suspectMap[Object.keys(suspectMap!)[i]]);
+  }
+
+  return suspects.map((citizen: CitizenData) => {
+    return (
+      <ListItem key={`citizen_${citizen.id}`}>
+        <ListItemAvatar>
+          <Avatar
+            style={{
+              backgroundColor: ElementColors[citizen.element],
+            }}
+          >
+            {citizen.name[0]}
+          </Avatar>
+        </ListItemAvatar>
+        <ListItemText primary={citizen.name} secondary={`ID: #${citizen.id}`} />
+      </ListItem>
+    );
+  });
+};
+
 const SuspectListItems = () => {
   const classes = useStyles();
+  const { suspectMap } = useContext(SuspectContext);
 
-  const { data } = useContext(SuspectContext);
-  const [citizenData, setCitizenData] = useState<CitizenData[]>([]);
-  // useEffect(() => {
-  //   setCitizenData(Array.from(data));
-  // }, [data]);
-
-  return (
-    <List className={classes.listRoot}>
-      {citizenData.map((citizen: CitizenData) => {
-        return (
-          <ListItem key={`citizen_${citizen.id}`}>
-            <ListItemAvatar>
-              <Avatar
-                style={{
-                  backgroundColor: ElementColors[citizen.element],
-                }}
-              >
-                {citizen.name[0]}
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText
-              primary={citizen.name}
-              secondary={`ID: #${citizen.id}`}
-            />
-          </ListItem>
-        );
-      })}
-    </List>
-  );
+  return <List className={classes.listRoot}>{listItems(suspectMap!)}</List>;
 };
 
 export default SuspectListItems;

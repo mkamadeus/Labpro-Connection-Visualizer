@@ -9,8 +9,8 @@ import {
   Chip,
   Button,
 } from '@material-ui/core';
-import { CitizenData, ElementColors } from '../api/citizen';
-import SuspectContext from '../context/SuspectContext';
+import { CitizenData, ElementColors, getCitizenData } from '../api/citizen';
+import { SuspectContext } from '../context/SuspectContext';
 import { SelectedNodeContext } from '../context/SelectedNodeContext';
 
 interface CitizenInformationProps {
@@ -18,8 +18,8 @@ interface CitizenInformationProps {
 }
 
 const CitizenInformation = () => {
-  const { data, addCitizenData } = useContext(SuspectContext);
-  const { selectedNode } = useContext(SelectedNodeContext);
+  const { suspectMap, suspectMapDispatcher } = useContext(SuspectContext);
+  const { selectedNode, setSelectedNode } = useContext(SelectedNodeContext);
 
   const chipSorting = (x: CitizenData, y: CitizenData) => {
     if (x.id > y.id) return -1;
@@ -34,7 +34,7 @@ const CitizenInformation = () => {
       }}
     >
       <CardContent>
-        <Box display={'flex'} flexDirection={'column'} p={'1em'}>
+        <Box display={'flex'} flexDirection={'column'} py={'1em'}>
           <Box display={'flex'} flexDirection={'row'} alignItems={'center'}>
             <Box p={'0.5em'}>
               <Avatar
@@ -47,10 +47,12 @@ const CitizenInformation = () => {
             <Box p={'0.5em'}>
               <Box>{selectedNode.name}</Box>
               <Box>
-                <Typography
-                  variant="subtitle1"
-                  color="textSecondary"
-                >{`ID: #${selectedNode.id}`}</Typography>
+                <Typography variant="subtitle1" color="textSecondary">{`ID: #${
+                  selectedNode.id
+                }, Element: ${
+                  selectedNode.element[0].toUpperCase() +
+                  selectedNode.element.substring(1)
+                }`}</Typography>
               </Box>
             </Box>
           </Box>
@@ -58,11 +60,24 @@ const CitizenInformation = () => {
             variant="contained"
             fullWidth
             onClick={() => {
-              // setSelectedNode(selectedNode);
+              if (!!suspectMap![selectedNode.id]) {
+                suspectMapDispatcher!({
+                  type: 'REMOVE_SUSPECT',
+                  id: selectedNode.id,
+                });
+              } else {
+                suspectMapDispatcher!({
+                  type: 'ADD_SUSPECT',
+                  id: selectedNode.id,
+                  suspect: selectedNode,
+                });
+              }
             }}
             color="primary"
           >
-            {/* {data.has(selectedNode) ? 'Remove from List' : 'Add to List'} */}
+            {!!suspectMap![selectedNode.id]
+              ? 'Remove from List'
+              : 'Add to List'}
           </Button>
         </Box>
         <Typography variant="body2" color="textPrimary" component="p">
@@ -87,6 +102,11 @@ const CitizenInformation = () => {
                     color: '#fff',
                   }}
                   size={'small'}
+                  onClick={async () => {
+                    await getCitizenData(value.id).then((response) => {
+                      setSelectedNode!(response);
+                    });
+                  }}
                 />
               </Box>
             );

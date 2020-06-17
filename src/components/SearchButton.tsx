@@ -6,6 +6,7 @@ import { GraphContext } from '../context/GraphContext';
 import { ElementColors } from '../api/citizen';
 import { LoadingContext } from '../context/LoadingContext';
 import { SelectedNodeContext } from '../context/SelectedNodeContext';
+import { getCitizenGraphData } from '../api/graph';
 
 const SearchButton = () => {
   const { query } = useContext(SearchContext);
@@ -20,34 +21,15 @@ const SearchButton = () => {
 
   const onClick = async () => {
     setLoading!(true);
-    await getCitizenData(query as string)
-      .then((response: Required<CitizenData>) => {
-        let nodes = [];
-        let links = [];
-        nodes?.push({
-          id: response.id,
-          element: response.element,
-          name: response.name,
-          color: ElementColors[response.element],
-        });
-        for (let i = 0; i < response.friends.length; i++) {
-          nodes?.push({
-            id: response.friends[i].id,
-            element: response.friends[i].element,
-            name: response.friends[i].name,
-            color: ElementColors[response.friends[i].element],
-          });
-          links?.push({
-            source: response.id,
-            target: response.friends[i].id,
-          });
-        }
-        graphNodesDispatcher!({ type: 'ADD_NODES', nodes: nodes });
-        graphLinksDispatcher!({ type: 'ADD_LINKS', links: links });
+    await getCitizenData(query as string).then(
+      (response: Required<CitizenData>) => {
         setSelectedNode!(response);
-      })
-      .then(() => {
-        console.log(graphNodes, graphLinks);
+      }
+    );
+    await getCitizenGraphData(query as string)
+      .then((response) => {
+        graphNodesDispatcher!({ type: 'ADD_NODES', nodes: response.nodes });
+        graphLinksDispatcher!({ type: 'ADD_LINKS', links: response.links });
         setLoading!(false);
       })
       .catch((error) => {

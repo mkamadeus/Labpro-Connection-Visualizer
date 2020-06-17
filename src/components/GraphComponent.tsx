@@ -1,6 +1,11 @@
 import React, { useContext } from 'react';
 import { Graph as D3Graph } from 'react-d3-graph';
-import { CitizenGraphData, CitizenNode, CitizenLink } from '../api/graph';
+import {
+  CitizenGraphData,
+  CitizenNode,
+  CitizenLink,
+  getCitizenGraphData,
+} from '../api/graph';
 import { getCitizenData, CitizenData, ElementColors } from '../api/citizen';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { GraphContext } from '../context/GraphContext';
@@ -43,10 +48,15 @@ interface GraphComponentProps {
 const GraphComponent = ({ nodeId, onClickNode }: GraphComponentProps) => {
   // Stylesheet
   const classes = useStyles();
-  const { graphNodes, graphLinks } = useContext(GraphContext);
+  const {
+    graphNodes,
+    graphLinks,
+    graphLinksDispatcher,
+    graphNodesDispatcher,
+  } = useContext(GraphContext);
   const { setSelectedNode } = useContext(SelectedNodeContext);
 
-  return graphNodes.length > 0 ? (
+  return graphNodes!.length > 0 ? (
     <div className={classes.graphRoot}>
       <D3Graph
         id={'graph'}
@@ -59,14 +69,43 @@ const GraphComponent = ({ nodeId, onClickNode }: GraphComponentProps) => {
           width: 600,
           directed: true,
           staticGraph: false,
+          automaticRearrangeAfterDropNode: true,
           d3: {
             gravity: -50,
             linkLength: 50,
+            linkStrength: 1,
+            alphaTarget: 1,
+            disableLinkForce: false,
           },
+          link: {
+            opacity: 0.5,
+            type: 'CURVE_SMOOTH',
+            strokeWidth: 1,
+          },
+          node: {
+            size: 150,
+          },
+          highlightOpacity: 0.2,
+          nodeHighlightBehavior: true,
         }}
         onClickNode={async (nodeId) => {
-          const node = await getCitizenData(nodeId);
-          setSelectedNode(node);
+          await getCitizenData(nodeId).then((response) => {
+            setSelectedNode!(response);
+          });
+          await getCitizenGraphData(nodeId as string)
+            .then((response) => {
+              graphNodesDispatcher!({
+                type: 'ADD_NODES',
+                nodes: response.nodes,
+              });
+              graphLinksDispatcher!({
+                type: 'ADD_LINKS',
+                links: response.links,
+              });
+            })
+            .catch((error) => {
+              console.log(error);
+            });
         }}
       />
     </div>

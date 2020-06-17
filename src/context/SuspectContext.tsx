@@ -1,12 +1,44 @@
-import React from 'react';
+import React, { useReducer } from 'react';
 import { CitizenData } from '../api/citizen';
+import {
+  suspectReducer,
+  SuspectAction,
+  SuspectReducer,
+} from '../reducer/SuspectReducer';
 
-// SuspectContext Definition
-type SuspectContextProps = {
-  data: Set<CitizenData>;
-  addCitizenData: (c: CitizenData) => void;
+/**
+ * SuspectContext props definition.
+ */
+export type SuspectContextProps = {
+  suspectMap: { [key: string]: CitizenData };
+  suspectMapDispatcher: React.Dispatch<SuspectAction>;
 };
 
-const SuspectContext = React.createContext<Partial<SuspectContextProps>>({});
+/**
+ * SuspectContextProvier props defintion.
+ */
+export type SuspectContextProviderProps = {
+  children?: React.ReactNode;
+};
 
-export default SuspectContext;
+/**
+ * SuspcectContext context definition
+ */
+export const SuspectContext = React.createContext<Partial<SuspectContextProps>>(
+  {}
+);
+
+export const SuspectContextProvider = (props: SuspectContextProviderProps) => {
+  const [suspectMap, suspectMapDispatcher] = useReducer<
+    SuspectReducer,
+    { [key: string]: CitizenData }
+  >(suspectReducer, {}, () => {
+    return {};
+  });
+
+  return (
+    <SuspectContext.Provider value={{ suspectMap, suspectMapDispatcher }}>
+      {props.children}
+    </SuspectContext.Provider>
+  );
+};
