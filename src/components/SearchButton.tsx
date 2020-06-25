@@ -3,7 +3,6 @@ import { Button } from '@material-ui/core';
 import { SearchContext } from '../context/SearchContext';
 import { getCitizenData, CitizenData } from '../api/citizen';
 import { GraphContext } from '../context/GraphContext';
-import { ElementColors } from '../api/citizen';
 import { LoadingContext } from '../context/LoadingContext';
 import { SelectedNodeContext } from '../context/SelectedNodeContext';
 import { getCitizenGraphData } from '../api/graph';
@@ -12,12 +11,9 @@ const SearchButton = () => {
   const { query } = useContext(SearchContext);
   const { setLoading } = useContext(LoadingContext);
   const { setSelectedNode } = useContext(SelectedNodeContext);
-  const {
-    graphNodes,
-    graphLinks,
-    graphNodesDispatcher,
-    graphLinksDispatcher,
-  } = useContext(GraphContext);
+  const { graphNodesDispatcher, graphLinksDispatcher } = useContext(
+    GraphContext
+  );
 
   const onClick = async () => {
     setLoading!(true);

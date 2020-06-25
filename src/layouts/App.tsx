@@ -1,17 +1,15 @@
-import React, { useState, useEffect, useReducer } from 'react';
-import { Box, Grid, Fade } from '@material-ui/core';
-import { CitizenData, ElementBending } from '../api/citizen';
+import React from 'react';
+import { Box, Grid } from '@material-ui/core';
+
 import SearchComponent from '../components/SearchComponent';
 import GraphComponent from '../components/GraphComponent';
 import CitizenInformation from '../components/CitizenInformation';
 import SuspectList from '../components/SuspectList';
-import SuspectContext, {
-  SuspectContextProvider,
-} from '../context/SuspectContext';
+
+import { SuspectContextProvider } from '../context/SuspectContext';
 import { GraphContextProvider } from '../context/GraphContext';
 import { LoadingContextProvider } from '../context/LoadingContext';
 import { SelectedNodeContextProvider } from '../context/SelectedNodeContext';
-import { CitizenNode, CitizenLink } from '../api/graph';
 
 export default function App() {
   return (
@@ -26,12 +24,7 @@ export default function App() {
                 bgcolor={'#eeeeee'}
                 p={'1em'}
               >
-                <GraphComponent
-                  nodeId={'1'}
-                  onClickNode={(nodeId) => {
-                    setSelectedNode(nodeId);
-                  }}
-                />
+                <GraphComponent />
               </Box>
               <Box
                 display={'flex'}

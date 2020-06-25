@@ -6,10 +6,9 @@ import {
   CitizenLink,
   getCitizenGraphData,
 } from '../api/graph';
-import { getCitizenData, CitizenData, ElementColors } from '../api/citizen';
+import { getCitizenData } from '../api/citizen';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { GraphContext } from '../context/GraphContext';
-import { LoadingContext } from '../context/LoadingContext';
 import { Typography } from '@material-ui/core';
 import { SelectedNodeContext } from '../context/SelectedNodeContext';
 
@@ -34,20 +33,19 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 /**
- * GraphComponent Props Definition.
- */
-interface GraphComponentProps {
-  onClickNode: (node: CitizenData) => void;
-  nodeId: string;
-  graphData: CitizenGraphData;
-}
-
-/**
  * `GraphComponent` Component.
  */
-const GraphComponent = ({ nodeId, onClickNode }: GraphComponentProps) => {
+const GraphComponent = () => {
+  const { graphNodes } = useContext(GraphContext);
+
+  return graphNodes!.length > 0 ? <Graph /> : <EmptyGraph />;
+};
+
+const Graph = () => {
   // Stylesheet
   const classes = useStyles();
+
+  // Context
   const {
     graphNodes,
     graphLinks,
@@ -56,14 +54,16 @@ const GraphComponent = ({ nodeId, onClickNode }: GraphComponentProps) => {
   } = useContext(GraphContext);
   const { setSelectedNode } = useContext(SelectedNodeContext);
 
-  return graphNodes!.length > 0 ? (
+  return (
     <div className={classes.graphRoot}>
       <D3Graph
         id={'graph'}
-        data={{
-          nodes: graphNodes as CitizenNode[],
-          links: graphLinks as CitizenLink[],
-        }}
+        data={
+          {
+            nodes: graphNodes as CitizenNode[],
+            links: graphLinks as CitizenLink[],
+          } as CitizenGraphData
+        }
         config={{
           height: 600,
           width: 600,
@@ -109,7 +109,14 @@ const GraphComponent = ({ nodeId, onClickNode }: GraphComponentProps) => {
         }}
       />
     </div>
-  ) : (
+  );
+};
+
+const EmptyGraph = () => {
+  // Stylesheet
+  const classes = useStyles();
+
+  return (
     <div className={classes.graphRoot}>
       <Typography
         className={classes.italicText}

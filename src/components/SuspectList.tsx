@@ -6,7 +6,8 @@ import SuspectListItems from '../components/SuspectListItems';
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      boxShadow: theme.shadows[6],
+      boxShadow: theme.shadows[2],
+      borderRadius: theme.shape.borderRadius,
     },
     title: {
       fontSize: '24pt',

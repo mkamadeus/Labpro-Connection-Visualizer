@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import {
   Box,
   Card,
-  CardHeader,
   Avatar,
   CardContent,
   Typography,
@@ -34,7 +33,7 @@ const CitizenInformation = () => {
       }}
     >
       <CardContent>
-        <Box display={'flex'} flexDirection={'column'} py={'1em'}>
+        <Box display={'flex'} flexDirection={'column'} pb={'1em'}>
           <Box display={'flex'} flexDirection={'row'} alignItems={'center'}>
             <Box p={'0.5em'}>
               <Avatar
@@ -45,9 +44,11 @@ const CitizenInformation = () => {
               </Avatar>
             </Box>
             <Box p={'0.5em'}>
-              <Box>{selectedNode.name}</Box>
               <Box>
-                <Typography variant="subtitle1" color="textSecondary">{`ID: #${
+                <Typography variant="subtitle1">{selectedNode.name}</Typography>
+              </Box>
+              <Box>
+                <Typography variant="subtitle2" color="textSecondary">{`ID: #${
                   selectedNode.id
                 }, Element: ${
                   selectedNode.element[0].toUpperCase() +
