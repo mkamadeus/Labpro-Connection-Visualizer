@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [8.x, 10.x, 12.x]
+        node-version: [10.x, 12.x]
     steps:
     - name: Checkout to master
       uses: actions/checkout@master
@@ -19,6 +19,11 @@ jobs:
       run: npm install
     - name: Build Project
       run: npm run build
+    - name: Archive Production Artifact
+      uses: actions/upload-artifact@master
+      with:
+        name: dist
+        path: dist
   deploy:
     name: Deploy
     needs: build
