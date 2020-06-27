@@ -34,7 +34,7 @@ const SearchButton = () => {
   };
 
   return (
-    <Button fullWidth color="primary" variant="outlined" onClick={onClick}>
+    <Button fullWidth variant="outlined" onClick={onClick}>
       Search
     </Button>
   );

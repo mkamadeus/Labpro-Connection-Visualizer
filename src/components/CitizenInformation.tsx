@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import {
   Box,
   Card,
@@ -7,31 +7,69 @@ import {
   Typography,
   Chip,
   Button,
+  createStyles,
+  makeStyles,
+  Theme,
+  CardActions,
+  IconButton,
 } from '@material-ui/core';
 import { CitizenData, ElementColors, getCitizenData } from '../api/citizen';
+import AddIcon from '@material-ui/icons/Add';
+import RemoveIcon from '@material-ui/icons/Remove';
 import { SuspectContext } from '../context/SuspectContext';
 import { SelectedNodeContext } from '../context/SelectedNodeContext';
+import { GraphContext } from '../context/GraphContext';
+import { getCitizenGraphData } from '../api/graph';
 
-interface CitizenInformationProps {
-  selectedNode: CitizenData;
-}
+const useStyles = makeStyles((theme: Theme) => {
+  return createStyles({});
+});
 
 const CitizenInformation = () => {
+  const {
+    graphId,
+    graphIdDispatcher,
+    graphNodesDispatcher,
+    graphLinksDispatcher,
+  } = useContext(GraphContext);
   const { suspectMap, suspectMapDispatcher } = useContext(SuspectContext);
   const { selectedNode, setSelectedNode } = useContext(SelectedNodeContext);
 
-  const chipSorting = (x: CitizenData, y: CitizenData) => {
-    if (x.id > y.id) return -1;
-    else if (x.id < y.id) return 1;
-    else return 0;
+  const expandNode = async (nodeId: string) => {
+    await getCitizenData(nodeId as string).then((response) => {
+      setSelectedNode!(response);
+      console.log(graphId);
+      graphIdDispatcher!({
+        type: 'ADD_ID',
+        id: response.id,
+      });
+    });
+    console.log(graphId);
+
+    if (!graphId![nodeId]) {
+      await getCitizenGraphData(nodeId as string)
+        .then((response) => {
+          graphNodesDispatcher!({
+            type: 'ADD_NODES',
+            nodes: response.nodes,
+          });
+          graphLinksDispatcher!({
+            type: 'ADD_LINKS',
+            links: response.links,
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  };
+
+  const handleClick = async (event: React.MouseEvent<HTMLElement>) => {
+    await expandNode!(selectedNode?.id as string);
   };
 
   return !!selectedNode ? (
-    <Card
-      style={{
-        width: '100%',
-      }}
-    >
+    <Card variant="outlined">
       <CardContent>
         <Box display={'flex'} flexDirection={'column'} pb={'1em'}>
           <Box display={'flex'} flexDirection={'row'} alignItems={'center'}>
@@ -57,29 +95,36 @@ const CitizenInformation = () => {
               </Box>
             </Box>
           </Box>
-          <Button
-            variant="contained"
-            fullWidth
-            onClick={() => {
-              if (!!suspectMap![selectedNode.id]) {
-                suspectMapDispatcher!({
-                  type: 'REMOVE_SUSPECT',
-                  id: selectedNode.id,
-                });
-              } else {
-                suspectMapDispatcher!({
-                  type: 'ADD_SUSPECT',
-                  id: selectedNode.id,
-                  suspect: selectedNode,
-                });
-              }
-            }}
-            color="primary"
-          >
-            {!!suspectMap![selectedNode.id]
-              ? 'Remove from List'
-              : 'Add to List'}
-          </Button>
+          <CardActions>
+            <Button
+              variant="outlined"
+              onClick={() => {
+                if (!!suspectMap![selectedNode.id]) {
+                  suspectMapDispatcher!({
+                    type: 'REMOVE_SUSPECT',
+                    id: selectedNode.id,
+                  });
+                } else {
+                  suspectMapDispatcher!({
+                    type: 'ADD_SUSPECT',
+                    id: selectedNode.id,
+                    suspect: selectedNode,
+                  });
+                }
+              }}
+              color="primary"
+            >
+              {!!suspectMap![selectedNode.id] ? 'Remove' : 'Save'}
+            </Button>
+            <Button
+              variant="outlined"
+              onClick={handleClick}
+              color="primary"
+              disabled={graphId![selectedNode.id]}
+            >
+              Expand
+            </Button>
+          </CardActions>
         </Box>
         <Typography variant="body2" color="textPrimary" component="p">
           Known connection{'(s)'}:
@@ -92,16 +137,20 @@ const CitizenInformation = () => {
           my={1}
           width="100%"
         >
-          {selectedNode.friends?.sort(chipSorting).map((value) => {
+          {selectedNode.friends?.map((value) => {
+            if (value.id === selectedNode.id) return;
+
             return (
               <Box p={0.5} key={`chip_${value.id}`}>
                 <Chip
-                  label={`#${value.id} ${value.name}`}
+                  label={`#${value.id} ${value.name.split(' ')[0]}`}
                   clickable={true}
-                  style={{
-                    backgroundColor: ElementColors[value.element],
-                    color: '#fff',
-                  }}
+                  style={
+                    {
+                      // backgroundColor: ElementColors[value.element],
+                      // color: '#fff',
+                    }
+                  }
                   size={'small'}
                   onClick={async () => {
                     await getCitizenData(value.id).then((response) => {

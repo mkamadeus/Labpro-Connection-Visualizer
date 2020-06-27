@@ -35,13 +35,13 @@ export const getCitizenData = async (
   id: string
 ): Promise<Required<CitizenData>> => {
   return new Promise((resolve, reject) => {
-    axios.get(`https://avatar.labpro.dev/friends/${id}`).then(
-      (response) => {
+    axios
+      .get(`https://avatar.labpro.dev/friends/${id}`)
+      .then((response) => {
         resolve(response.data.payload as Required<CitizenData>);
-      },
-      (error) => {
-        reject(error);
-      }
-    );
+      })
+      .catch((error) => {
+        resolve(error);
+      });
   });
 };

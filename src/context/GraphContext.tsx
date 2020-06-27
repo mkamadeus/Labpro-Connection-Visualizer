@@ -7,6 +7,9 @@ import {
   GraphLinksAction,
   GraphNodeReducer,
   GraphLinkReducer,
+  idReducer,
+  GraphIdReducer,
+  GraphIdAction,
 } from '../reducer/GraphReducer';
 
 /**
@@ -15,8 +18,10 @@ import {
 export type GraphContextProps = {
   graphNodes: CitizenNode[];
   graphLinks: CitizenLink[];
+  graphId: { [key: string]: boolean };
   graphNodesDispatcher: React.Dispatch<GraphNodesAction>;
   graphLinksDispatcher: React.Dispatch<GraphLinksAction>;
+  graphIdDispatcher: React.Dispatch<GraphIdAction>;
 };
 
 /**
@@ -43,6 +48,7 @@ export const GraphContextProvider = (props: GraphContextProviderProps) => {
   >(nodeReducer, [], () => {
     return [];
   });
+
   // Graph links reducer
   const [graphLinks, graphLinksDispatcher] = useReducer<
     GraphLinkReducer,
@@ -51,13 +57,23 @@ export const GraphContextProvider = (props: GraphContextProviderProps) => {
     return [];
   });
 
+  // Graph ID reducer
+  const [graphId, graphIdDispatcher] = useReducer<
+    GraphIdReducer,
+    { [key: string]: boolean }
+  >(idReducer, {}, () => {
+    return {};
+  });
+
   return (
     <GraphContext.Provider
       value={{
         graphNodes,
         graphLinks,
+        graphId,
         graphNodesDispatcher,
         graphLinksDispatcher,
+        graphIdDispatcher,
       }}
     >
       {props.children}

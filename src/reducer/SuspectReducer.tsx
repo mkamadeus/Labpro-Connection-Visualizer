@@ -18,9 +18,6 @@ export const suspectReducer: SuspectReducer = (
 ) => {
   switch (action.type) {
     case 'ADD_SUSPECT':
-      // if (!!!state[action.id!]) {
-      //   state[action.id!] = action.suspect!;
-      // }
       return { ...state, [action.id!]: action.suspect! };
     case 'REMOVE_SUSPECT':
       delete state[action.id!];

@@ -19,6 +19,14 @@ export type GraphLinksAction = {
 };
 
 /**
+ * GraphLinksAction for useReducer's CitizenLink Action.
+ */
+export type GraphIdAction = {
+  type: string;
+  id: string;
+};
+
+/**
  * Alias for CitizenNode reducer function.
  */
 export type GraphNodeReducer = React.Reducer<CitizenNode[], GraphNodesAction>;
@@ -27,6 +35,14 @@ export type GraphNodeReducer = React.Reducer<CitizenNode[], GraphNodesAction>;
  * Alias for CitizenLink reducer function.
  */
 export type GraphLinkReducer = React.Reducer<CitizenLink[], GraphLinksAction>;
+
+/**
+ * Alias for GraphId reducer function.
+ */
+export type GraphIdReducer = React.Reducer<
+  { [key: string]: boolean },
+  GraphIdAction
+>;
 
 /**
  * The reducer function for CitizenNode[].
@@ -79,6 +95,20 @@ export const linkReducer: GraphLinkReducer = (
         }
       }
       return result;
+    default:
+      return state;
+  }
+};
+
+export const idReducer: GraphIdReducer = (
+  state: { [key: string]: boolean },
+  action: GraphIdAction
+) => {
+  switch (action.type) {
+    case 'ADD_ID':
+      return { ...state, [action.id]: true };
+    case 'REMOVE_ID':
+      return { ...state, [action.id]: false };
     default:
       return state;
   }

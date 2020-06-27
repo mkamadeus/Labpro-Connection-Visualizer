@@ -1,4 +1,9 @@
-import { GraphNode, GraphLink, GraphData } from 'react-d3-graph';
+import {
+  GraphNode,
+  GraphLink,
+  GraphData,
+  GraphConfiguration,
+} from 'react-d3-graph';
 import { CitizenData, getCitizenData, ElementColors } from './citizen';
 
 /**
@@ -18,6 +23,10 @@ export interface CitizenLink extends GraphLink {}
  */
 export interface CitizenGraphData extends GraphData<CitizenNode, CitizenLink> {}
 
+/**
+ * Method to make a get graph data which is processed without duplicates.
+ * @param query ID of citizen.
+ */
 export const getCitizenGraphData = async (
   query: string
 ): Promise<CitizenGraphData> => {
@@ -45,7 +54,6 @@ export const getCitizenGraphData = async (
             target: response.friends[i].id,
           });
         }
-        console.log('pisang', nodes, links);
 
         resolve({ nodes: nodes, links: links } as CitizenGraphData);
       })
@@ -53,4 +61,35 @@ export const getCitizenGraphData = async (
         console.log(error);
       });
   });
+};
+
+/**
+ * Graph configuration for the graph component.
+ */
+export const GraphConfig: Partial<GraphConfiguration<
+  CitizenNode,
+  CitizenLink
+>> = {
+  height: 600,
+  width: 300,
+  directed: true,
+  staticGraph: false,
+  automaticRearrangeAfterDropNode: true,
+  d3: {
+    gravity: -50,
+    linkLength: 50,
+    linkStrength: 1,
+    alphaTarget: 1,
+    disableLinkForce: false,
+  },
+  link: {
+    opacity: 0.5,
+    type: 'CURVE_SMOOTH',
+    strokeWidth: 1,
+  },
+  node: {
+    size: 150,
+  },
+  highlightOpacity: 0.2,
+  nodeHighlightBehavior: true,
 };
