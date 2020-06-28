@@ -37,14 +37,6 @@ export type GraphNodeReducer = React.Reducer<CitizenNode[], GraphNodesAction>;
 export type GraphLinkReducer = React.Reducer<CitizenLink[], GraphLinksAction>;
 
 /**
- * Alias for GraphId reducer function.
- */
-export type GraphIdReducer = React.Reducer<
-  { [key: string]: boolean },
-  GraphIdAction
->;
-
-/**
  * The reducer function for CitizenNode[].
  * @param state The current state passed
  * @param action THe action for the current state
@@ -95,20 +87,6 @@ export const linkReducer: GraphLinkReducer = (
         }
       }
       return result;
-    default:
-      return state;
-  }
-};
-
-export const idReducer: GraphIdReducer = (
-  state: { [key: string]: boolean },
-  action: GraphIdAction
-) => {
-  switch (action.type) {
-    case 'ADD_ID':
-      return { ...state, [action.id]: true };
-    case 'REMOVE_ID':
-      return { ...state, [action.id]: false };
     default:
       return state;
   }

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React from 'react';
 import {
   Box,
   Card,
@@ -7,62 +7,20 @@ import {
   Typography,
   Chip,
   Button,
-  createStyles,
-  makeStyles,
-  Theme,
   CardActions,
-  IconButton,
 } from '@material-ui/core';
-import { CitizenData, ElementColors, getCitizenData } from '../api/citizen';
-import AddIcon from '@material-ui/icons/Add';
-import RemoveIcon from '@material-ui/icons/Remove';
-import { SuspectContext } from '../context/SuspectContext';
-import { SelectedNodeContext } from '../context/SelectedNodeContext';
-import { GraphContext } from '../context/GraphContext';
-import { getCitizenGraphData } from '../api/graph';
-
-const useStyles = makeStyles((theme: Theme) => {
-  return createStyles({});
-});
+import { ElementColors, getCitizenData } from '../api/citizen';
+import useGraphInfo from '../hook/GraphInfoHook';
+import useSuspectInfo from '../hook/SuspectInfoHook';
 
 const CitizenInformation = () => {
+  const { isSelectedSuspected, suspectButtonAction } = useSuspectInfo();
   const {
-    graphId,
-    graphIdDispatcher,
-    graphNodesDispatcher,
-    graphLinksDispatcher,
-  } = useContext(GraphContext);
-  const { suspectMap, suspectMapDispatcher } = useContext(SuspectContext);
-  const { selectedNode, setSelectedNode } = useContext(SelectedNodeContext);
-
-  const expandNode = async (nodeId: string) => {
-    await getCitizenData(nodeId as string).then((response) => {
-      setSelectedNode!(response);
-      console.log(graphId);
-      graphIdDispatcher!({
-        type: 'ADD_ID',
-        id: response.id,
-      });
-    });
-    console.log(graphId);
-
-    if (!graphId![nodeId]) {
-      await getCitizenGraphData(nodeId as string)
-        .then((response) => {
-          graphNodesDispatcher!({
-            type: 'ADD_NODES',
-            nodes: response.nodes,
-          });
-          graphLinksDispatcher!({
-            type: 'ADD_LINKS',
-            links: response.links,
-          });
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-  };
+    selectedNode,
+    setSelectedNode,
+    expandNode,
+    isNodePresent,
+  } = useGraphInfo();
 
   const handleClick = async (event: React.MouseEvent<HTMLElement>) => {
     await expandNode!(selectedNode?.id as string);
@@ -98,29 +56,16 @@ const CitizenInformation = () => {
           <CardActions>
             <Button
               variant="outlined"
-              onClick={() => {
-                if (!!suspectMap![selectedNode.id]) {
-                  suspectMapDispatcher!({
-                    type: 'REMOVE_SUSPECT',
-                    id: selectedNode.id,
-                  });
-                } else {
-                  suspectMapDispatcher!({
-                    type: 'ADD_SUSPECT',
-                    id: selectedNode.id,
-                    suspect: selectedNode,
-                  });
-                }
-              }}
+              onClick={suspectButtonAction}
               color="primary"
             >
-              {!!suspectMap![selectedNode.id] ? 'Remove' : 'Save'}
+              {isSelectedSuspected() ? 'Remove' : 'Save'}
             </Button>
             <Button
               variant="outlined"
               onClick={handleClick}
               color="primary"
-              disabled={graphId![selectedNode.id]}
+              disabled={isNodePresent(selectedNode.id)}
             >
               Expand
             </Button>

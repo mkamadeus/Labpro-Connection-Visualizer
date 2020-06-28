@@ -34,14 +34,24 @@ export const ElementColors = {
 export const getCitizenData = async (
   id: string
 ): Promise<Required<CitizenData>> => {
-  return new Promise((resolve, reject) => {
-    axios
-      .get(`https://avatar.labpro.dev/friends/${id}`)
-      .then((response) => {
-        resolve(response.data.payload as Required<CitizenData>);
-      })
-      .catch((error) => {
-        resolve(error);
-      });
+  return new Promise(async (resolve, reject) => {
+    if (!localStorage.getItem(`avatar_${id}`)) {
+      await axios
+        .get(`https://avatar.labpro.dev/friends/${id}`)
+        .then((response) => {
+          const data = response.data.payload as Required<CitizenData>;
+          localStorage.setItem(`avatar_${data.id}`, JSON.stringify(data));
+        })
+        .catch((error) => {
+          // TODO : handle invalid ID
+          resolve(error);
+        });
+    }
+
+    resolve(
+      JSON.parse(localStorage.getItem(`avatar_${id}`) as string) as Required<
+        CitizenData
+      >
+    );
   });
 };

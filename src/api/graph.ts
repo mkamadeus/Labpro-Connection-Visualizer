@@ -25,17 +25,17 @@ export interface CitizenGraphData extends GraphData<CitizenNode, CitizenLink> {}
 
 /**
  * Method to make a get graph data which is processed without duplicates.
- * @param query ID of citizen.
+ * @param nodeId ID of citizen.
  */
 export const getCitizenGraphData = async (
-  query: string
+  nodeId: string
 ): Promise<CitizenGraphData> => {
   return new Promise(async (resolve, reject) => {
     let nodes: CitizenNode[] = [];
     let links: CitizenLink[] = [];
 
-    await getCitizenData(query as string)
-      .then((response: Required<CitizenData>) => {
+    await getCitizenData(nodeId as string)
+      .then((response) => {
         nodes?.push({
           id: response.id,
           element: response.element,
@@ -55,7 +55,20 @@ export const getCitizenGraphData = async (
           });
         }
 
-        resolve({ nodes: nodes, links: links } as CitizenGraphData);
+        resolve({
+          nodes: nodes.filter(
+            (object, index) =>
+              nodes.findIndex((other) => other.id === object.id) === index
+          ),
+          links: links.filter(
+            (object, index) =>
+              links.findIndex(
+                (other) =>
+                  other.source === object.source &&
+                  other.target === object.target
+              ) === index
+          ),
+        } as CitizenGraphData);
       })
       .catch((error) => {
         console.log(error);

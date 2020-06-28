@@ -12,6 +12,7 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { GraphContext } from '../context/GraphContext';
 import { Typography } from '@material-ui/core';
 import { SelectedNodeContext } from '../context/SelectedNodeContext';
+import useGraphInfo from '../hook/GraphInfoHook';
 
 /**
  * Stylesheet definition.
@@ -51,44 +52,7 @@ const Graph = () => {
   const classes = useStyles();
 
   // Context
-  const {
-    graphNodes,
-    graphLinks,
-    graphId,
-    graphLinksDispatcher,
-    graphNodesDispatcher,
-    graphIdDispatcher,
-  } = useContext(GraphContext);
-  const { setSelectedNode } = useContext(SelectedNodeContext);
-
-  const expandNode = async (nodeId: string) => {
-    await getCitizenData(nodeId as string).then((response) => {
-      setSelectedNode!(response);
-      console.log(graphId);
-      graphIdDispatcher!({
-        type: 'ADD_ID',
-        id: response.id,
-      });
-    });
-    console.log(graphId);
-
-    if (!graphId![nodeId]) {
-      await getCitizenGraphData(nodeId as string)
-        .then((response) => {
-          graphNodesDispatcher!({
-            type: 'ADD_NODES',
-            nodes: response.nodes,
-          });
-          graphLinksDispatcher!({
-            type: 'ADD_LINKS',
-            links: response.links,
-          });
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-  };
+  const { graphNodes, graphLinks, expandNode } = useGraphInfo();
 
   return (
     <div className={classes.graphRoot}>

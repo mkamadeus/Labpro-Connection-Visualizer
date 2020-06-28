@@ -1,73 +1,115 @@
-![](https://github.com/mkamadeus/Labpro-Connection-Visualizer/workflows/Firebase%20Deploy/badge.svg)
+# Beifong-Wangky Suspect Expander &middot;![](https://github.com/mkamadeus/Labpro-Connection-Visualizer/workflows/Firebase%20Deploy/badge.svg)
 
-# Suspect Expander
+> A cooperation between Republic City Police Department (Toph Beifong) and Wangky Chocolate Factory (Willy Wangky).
 
-> The Beifong's and Wangky's pride.
-> This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+**Created by: Matthew Kevin Amadeus - 13518035**
 
-## Available Scripts
+## Application Background
 
-In the project directory, you can run:
+This application was made by request from the Republic City Police Department and Willy Wangky himself. This application was made to solve the always increasing crime rate in Republic City, hence may be used later on to find the culprit behind all the mess that he/she had created open Republic City. Toph believed that using this modern app technology, Republic City can be safe from imminent threats.
 
-### `yarn start`
+## Running This Application
 
-Runs the app in the development mode.<br />
+After cloning/downloading this repository, you must first run:
+
+```
+yarn install
+```
+
+, or...
+
+```
+npm install
+```
+
+This will ensure that you have all the packages needed for this project.
+
+After all the dependencies has finished downloaded, in your project directory you can run:
+
+```
+yarn start
+```
+
+, or...
+
+```
+npm start
+```
+
+This will the app in the development mode.
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+Wangky said that it was to confusing for his little chocolate brain. But don't fret, I have prepared an online version hosted in [this link](https://suspect-expander.web.app). :)
 
-### `yarn test`
+## Using This Application
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+When you are ready to use the application, you will be greeted with a simple Material Design interface:
 
-### `yarn build`
+(image here)
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Enter a valid ID into the search bar, then press `ENTER`. A graph will be shown.
+- There are several things that you can do, such as clicking on a node to expand it, or by clicking the 'Expand' button on the citizen information panel.
+- You can add a citizen into your suspect list to keep track which citizen you suspect.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+## Library Used
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Without these libraries, this project can't be done as a whole:
 
-### `yarn eject`
+- React, bootstrapped with CRA (Create React App)
+- Material UI, a React material design based component library.
+- Axios, for the implementation of a promise based HTTP requests.
+- react-d3-graph, a react component for showing a graph using d3.js by GitHub user [danielcaldas](https://github.com/danielcaldas/).
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## API Review
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Wangky provided me with an API for the application to use. There are several bugs on the API that is fixed in this application, such as:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- Several citizen has some duplicated friend entry, e.g citizen with ID 5.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+```json
+{
+    "status": 200,
+    "payload": {
+        "id": "5",
+        "name": "Byan Ravid",
+        "friends": [
+            {
+                "id": "70",
+                "name": "Raihan Yumna Daniel",
+                "element": "water"
+            },
+            {
+                "id": "70",
+                "name": "Raihan Yumna Daniel",
+                "element": "water"
+            },
+            ...
+        ],
+        "element": "earth"
+    },
+    "message": ""
+}
+```
 
-## Learn More
+- Several citizen has a listed connection with themselves, which doesn't really make sense, e.g citizen with ID 85.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+```json
+{
+  "status": 200,
+  "payload": {
+    "id": "85",
+    "name": "Ho Kelana Grace",
+    "friends": [
+      ...
+      {
+        "id": "85",
+        "name": "Ho Kelana Grace",
+        "element": "earth"
+      },
+      ...
+    ],
+    "element": "earth"
+  },
+  "message": ""
+}
+```

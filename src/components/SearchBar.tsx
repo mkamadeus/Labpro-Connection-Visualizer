@@ -1,13 +1,12 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { InputBase, Theme } from '@material-ui/core';
 import { makeStyles, createStyles, fade } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
-import { SearchContext } from '../context/SearchContext';
 import { SelectedNodeContext } from '../context/SelectedNodeContext';
-import { LoadingContext } from '../context/LoadingContext';
 import { GraphContext } from '../context/GraphContext';
 import { getCitizenData, CitizenData } from '../api/citizen';
 import { getCitizenGraphData } from '../api/graph';
+import useGraphInfo from '../hook/GraphInfoHook';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -49,51 +48,18 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const SearchBar = () => {
+  // Stylesheet
   const classes = useStyles();
-  const { query, setQuery } = useContext(SearchContext);
-  const { setLoading } = useContext(LoadingContext);
-  const { setSelectedNode } = useContext(SelectedNodeContext);
-  const {
-    graphId,
-    graphNodesDispatcher,
-    graphLinksDispatcher,
-    graphIdDispatcher,
-  } = useContext(GraphContext);
 
-  const expandNode = async (nodeId: string) => {
-    await getCitizenData(nodeId as string).then((response) => {
-      setSelectedNode!(response);
-      console.log(graphId);
-      graphIdDispatcher!({
-        type: 'ADD_ID',
-        id: response.id,
-      });
-    });
-    console.log(graphId);
+  // States
+  const [query, setQuery] = useState('');
 
-    if (!graphId![nodeId]) {
-      await getCitizenGraphData(nodeId as string)
-        .then((response) => {
-          graphNodesDispatcher!({
-            type: 'ADD_NODES',
-            nodes: response.nodes,
-          });
-          graphLinksDispatcher!({
-            type: 'ADD_LINKS',
-            links: response.links,
-          });
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-  };
+  // Custom Hook
+  const { expandNode } = useGraphInfo();
 
   const handleSearch = async (event: React.KeyboardEvent<HTMLElement>) => {
     if (event.key === 'Enter') {
-      // setLoading!(true);
       await expandNode!(query as string);
-      // setLoading!(false);
     }
   };
 
