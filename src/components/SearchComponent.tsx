@@ -10,7 +10,6 @@ import {
   Typography,
 } from '@material-ui/core';
 import SearchBar from './SearchBar';
-import SearchButton from './SearchButton';
 import { SearchContextProvider } from '../context/SearchContext';
 
 const useStyles = makeStyles((theme: Theme) => {
@@ -35,7 +34,6 @@ const SearchComponent = () => {
         <AppBar>
           <Toolbar className={classes.toolbar}>
             <SearchBar />
-            {/* <SearchButton /> */}
           </Toolbar>
         </AppBar>
       </SearchContextProvider>

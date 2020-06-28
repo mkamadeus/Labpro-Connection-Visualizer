@@ -50,8 +50,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const SearchBar = () => {
   const classes = useStyles();
-  const { setQuery } = useContext(SearchContext);
-  const { query } = useContext(SearchContext);
+  const { query, setQuery } = useContext(SearchContext);
   const { setLoading } = useContext(LoadingContext);
   const { setSelectedNode } = useContext(SelectedNodeContext);
   const {
@@ -92,9 +91,9 @@ const SearchBar = () => {
 
   const handleSearch = async (event: React.KeyboardEvent<HTMLElement>) => {
     if (event.key === 'Enter') {
-      setLoading!(true);
+      // setLoading!(true);
       await expandNode!(query as string);
-      setLoading!(false);
+      // setLoading!(false);
     }
   };
 

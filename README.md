@@ -1,4 +1,9 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![](https://github.com/mkamadeus/Labpro-Connection-Visualizer/workflows/Firebase%20Deploy/badge.svg)
+
+# Suspect Expander
+
+> The Beifong's and Wangky's pride.
+> This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
 
