@@ -58,6 +58,8 @@ export const nodeReducer: GraphNodeReducer = (
       }
 
       return result;
+    case 'REMOVE_ALL':
+      return [];
     default:
       return state;
   }
@@ -87,6 +89,8 @@ export const linkReducer: GraphLinkReducer = (
         }
       }
       return result;
+    case 'REMOVE_ALL':
+      return [];
     default:
       return state;
   }

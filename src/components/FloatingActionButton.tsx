@@ -9,6 +9,7 @@ import {
 } from '@material-ui/core';
 import PeopleIcon from '@material-ui/icons/People';
 import SuspectList from './SuspectList';
+import useGraphInfo from '../hook/GraphInfoHook';
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -23,10 +24,10 @@ const useStyles = makeStyles((theme: Theme) => {
 const FloatingActionButton = () => {
   const [anchor, setAnchor] = useState<null | HTMLElement>(null);
   const classes = useStyles();
+  const { clearGraph } = useGraphInfo();
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchor(event.currentTarget);
-    console.log(event.currentTarget);
   };
 
   const handleClose = () => {
@@ -47,9 +48,9 @@ const FloatingActionButton = () => {
         anchorEl={anchor as HTMLElement}
         open={Boolean(anchor)}
         onClose={handleClose}
-        keepMounted
       >
         <SuspectList />
+        <MenuItem onClick={clearGraph}>Clear graph</MenuItem>
       </Menu>
     </>
   );

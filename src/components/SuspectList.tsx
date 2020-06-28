@@ -20,7 +20,6 @@ import CloseIcon from '@material-ui/icons/Close';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import { SuspectContext } from '../context/SuspectContext';
 import { CitizenData, ElementColors } from '../api/citizen';
-import { GraphContext } from '../context/GraphContext';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -85,9 +84,6 @@ const SuspectListItems = () => {
 const SuspectList = () => {
   // Stylesheet
   const classes = useStyles();
-  const { graphNodesDispatcher, graphLinksDispatcher } = useContext(
-    GraphContext
-  );
   const [open, setOpen] = useState(false);
 
   const handleClose = () => {

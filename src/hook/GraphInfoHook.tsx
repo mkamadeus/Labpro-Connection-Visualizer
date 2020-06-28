@@ -17,6 +17,12 @@ const useGraphInfo = () => {
   } = useContext(GraphContext);
   const { selectedNode, setSelectedNode } = useContext(SelectedNodeContext);
 
+  const clearGraph = () => {
+    graphNodesDispatcher!({ type: 'REMOVE_ALL' });
+    graphLinksDispatcher!({ type: 'REMOVE_ALL' });
+    setSelectedNode!(undefined);
+  };
+
   const isNodePresent = (nodeId: string) => {
     return graphNodes?.findIndex((value) => value.id === nodeId) !== -1;
   };
@@ -60,6 +66,7 @@ const useGraphInfo = () => {
     graphNodes,
     graphLinks,
     isNodePresent,
+    clearGraph,
     expandNode,
   };
 };

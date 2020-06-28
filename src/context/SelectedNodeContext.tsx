@@ -3,7 +3,7 @@ import { CitizenData } from '../api/citizen';
 
 export type SelectedNodeContextProps = {
   selectedNode: CitizenData;
-  setSelectedNode: (data: CitizenData) => void;
+  setSelectedNode: (data: CitizenData | undefined) => void;
 };
 
 export type SelectedNodeContextProvierProps = {
@@ -17,7 +17,7 @@ export const SelectedNodeContext = React.createContext<
 export const SelectedNodeContextProvider = (
   props: SelectedNodeContextProvierProps
 ) => {
-  const [selectedNode, setSelectedNode] = useState<CitizenData>();
+  const [selectedNode, setSelectedNode] = useState<CitizenData | undefined>();
 
   return (
     <SelectedNodeContext.Provider value={{ selectedNode, setSelectedNode }}>
