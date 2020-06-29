@@ -21,10 +21,10 @@ export enum ElementBending {
  * Element designated colors.
  */
 export const ElementColors = {
-  water: require('@material-ui/core/colors/blue').default[200],
-  earth: require('@material-ui/core/colors/brown').default[200],
-  fire: require('@material-ui/core/colors/red').default[200],
-  air: require('@material-ui/core/colors/indigo').default[200],
+  water: require('@material-ui/core/colors/blue').default[300],
+  earth: require('@material-ui/core/colors/brown').default[300],
+  fire: require('@material-ui/core/colors/red').default[300],
+  air: require('@material-ui/core/colors/indigo').default[300],
 };
 
 /**
@@ -40,6 +40,13 @@ export const getCitizenData = async (
         .get(`https://avatar.labpro.dev/friends/${id}`)
         .then((response) => {
           const data = response.data.payload as Required<CitizenData>;
+          // console.log(data.friends);
+          data.friends = data.friends.filter(
+            (friend, index) =>
+              index ===
+              data.friends.findIndex((other) => other.id === friend.id)
+          );
+          // console.log(data.friends);
           localStorage.setItem(`avatar_${data.id}`, JSON.stringify(data));
         })
         .catch((error) => {

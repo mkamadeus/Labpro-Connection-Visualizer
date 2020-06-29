@@ -19,7 +19,7 @@ const CitizenInformation = () => {
     selectedNode,
     setSelectedNode,
     expandNode,
-    isNodePresent,
+    isNodeExpanded,
   } = useGraphInfo();
 
   const handleClick = async (event: React.MouseEvent<HTMLElement>) => {
@@ -41,10 +41,10 @@ const CitizenInformation = () => {
             </Box>
             <Box p={'0.5em'}>
               <Box>
-                <Typography variant="subtitle1">{selectedNode.name}</Typography>
+                <Typography variant="body2">{selectedNode.name}</Typography>
               </Box>
               <Box>
-                <Typography variant="subtitle2" color="textSecondary">{`ID: #${
+                <Typography variant="caption" color="textSecondary">{`ID: #${
                   selectedNode.id
                 }, Element: ${
                   selectedNode.element[0].toUpperCase() +
@@ -65,7 +65,7 @@ const CitizenInformation = () => {
               variant="outlined"
               onClick={handleClick}
               color="primary"
-              disabled={isNodePresent(selectedNode.id)}
+              disabled={isNodeExpanded(selectedNode.id)}
             >
               Expand
             </Button>
@@ -83,19 +83,17 @@ const CitizenInformation = () => {
           width="100%"
         >
           {selectedNode.friends?.map((value) => {
-            if (value.id === selectedNode.id) return;
+            if (value.id === selectedNode.id) return null;
 
             return (
               <Box p={0.5} key={`chip_${value.id}`}>
                 <Chip
                   label={`#${value.id} ${value.name.split(' ')[0]}`}
                   clickable={true}
-                  style={
-                    {
-                      // backgroundColor: ElementColors[value.element],
-                      // color: '#fff',
-                    }
-                  }
+                  style={{
+                    backgroundColor: ElementColors[value.element],
+                    color: '#fff',
+                  }}
                   size={'small'}
                   onClick={async () => {
                     await getCitizenData(value.id).then((response) => {

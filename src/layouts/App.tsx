@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Box,
   Grid,
@@ -20,6 +20,10 @@ import { GraphContextProvider } from '../context/GraphContext';
 import { SelectedNodeContextProvider } from '../context/SelectedNodeContext';
 
 export default function App() {
+  useEffect(() => {
+    localStorage.clear();
+  }, []);
+
   return (
     <GraphContextProvider>
       <SelectedNodeContextProvider>

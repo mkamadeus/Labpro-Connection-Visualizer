@@ -10,6 +10,7 @@ import {
 import PeopleIcon from '@material-ui/icons/People';
 import SuspectList from './SuspectList';
 import useGraphInfo from '../hook/GraphInfoHook';
+import HelpDialog from './HelpDialog';
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -51,6 +52,7 @@ const FloatingActionButton = () => {
       >
         <SuspectList />
         <MenuItem onClick={clearGraph}>Clear graph</MenuItem>
+        <HelpDialog />
       </Menu>
     </>
   );
