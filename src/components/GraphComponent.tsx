@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme: Theme) =>
       justifyContent: 'center',
       alignItems: 'center',
       height: '100%',
-      backgroundColor: '#fff',
+      backgroundColor: theme.palette.background.paper,
     },
     italicText: {
       fontStyle: 'italic',

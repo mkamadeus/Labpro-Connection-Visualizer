@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   Fab,
   Menu,
@@ -11,6 +11,7 @@ import PeopleIcon from '@material-ui/icons/People';
 import SuspectList from './SuspectList';
 import useGraphInfo from '../hook/GraphInfoHook';
 import HelpDialog from './HelpDialog';
+import { ThemeContext } from '../context/ThemeContext';
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -26,6 +27,7 @@ const FloatingActionButton = () => {
   const [anchor, setAnchor] = useState<null | HTMLElement>(null);
   const classes = useStyles();
   const { clearGraph } = useGraphInfo();
+  const toggleTheme = useContext(ThemeContext);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchor(event.currentTarget);
@@ -53,6 +55,7 @@ const FloatingActionButton = () => {
         <SuspectList />
         <MenuItem onClick={clearGraph}>Clear graph</MenuItem>
         <HelpDialog />
+        <MenuItem onClick={toggleTheme}>Toggle theme</MenuItem>
       </Menu>
     </>
   );

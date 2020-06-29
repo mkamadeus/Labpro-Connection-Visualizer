@@ -17,6 +17,7 @@ import FloatingActionButton from '../components/FloatingActionButton';
 
 import { SuspectContextProvider } from '../context/SuspectContext';
 import { GraphContextProvider } from '../context/GraphContext';
+import { ThemeContextProvider } from '../context/ThemeContext';
 import { SelectedNodeContextProvider } from '../context/SelectedNodeContext';
 
 export default function App() {
@@ -30,7 +31,7 @@ export default function App() {
         <SuspectContextProvider>
           <SearchComponent />
           <Container>
-            <Grid container>
+            <Grid container spacing={2}>
               <Grid item xs={12} md={6}>
                 <GraphComponent />
               </Grid>
