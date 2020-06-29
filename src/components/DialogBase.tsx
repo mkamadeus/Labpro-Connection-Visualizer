@@ -1,4 +1,4 @@
-import React, { useState, ReactPropTypes } from 'react';
+import React, { useState } from 'react';
 import {
   MenuItem,
   Dialog,
@@ -16,8 +16,7 @@ import MuiDialogTitle from '@material-ui/core/DialogTitle';
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      margin: 0,
-      padding: theme.spacing(2),
+      // padding: 0,
     },
     closeButton: {
       position: 'absolute',
@@ -60,7 +59,9 @@ const DialogBase = (props: DialogBaseProps) => {
             <CloseIcon />
           </IconButton>
         </MuiDialogTitle>
-        <DialogContent dividers>{props.children}</DialogContent>
+        <DialogContent dividers classes={{ root: classes.root }}>
+          {props.children}
+        </DialogContent>
         {props.button ? <DialogActions>{props.button}</DialogActions> : null}
       </Dialog>
     </>

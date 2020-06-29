@@ -1,23 +1,13 @@
 import React, { useEffect } from 'react';
-import {
-  Box,
-  Grid,
-  Container,
-  Toolbar,
-  BottomNavigation,
-  BottomNavigationAction,
-  Fab,
-} from '@material-ui/core';
+import { Grid, Container } from '@material-ui/core';
 
 import SearchComponent from '../components/SearchComponent';
 import GraphComponent from '../components/GraphComponent';
 import CitizenInformation from '../components/CitizenInformation';
-import SuspectList from '../components/SuspectList';
 import FloatingActionButton from '../components/FloatingActionButton';
 
 import { SuspectContextProvider } from '../context/SuspectContext';
 import { GraphContextProvider } from '../context/GraphContext';
-import { ThemeContextProvider } from '../context/ThemeContext';
 import { SelectedNodeContextProvider } from '../context/SelectedNodeContext';
 
 export default function App() {

@@ -1,8 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  MenuItem,
-  Dialog,
   Typography,
   makeStyles,
   Theme,
@@ -11,9 +9,7 @@ import {
   Box,
   Grid,
 } from '@material-ui/core';
-import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import DialogBase from './DialogBase';
-import classes from '*.module.css';
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({

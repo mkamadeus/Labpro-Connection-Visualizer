@@ -1,11 +1,7 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { InputBase, Theme } from '@material-ui/core';
 import { makeStyles, createStyles, fade } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
-import { SelectedNodeContext } from '../context/SelectedNodeContext';
-import { GraphContext } from '../context/GraphContext';
-import { getCitizenData, CitizenData } from '../api/citizen';
-import { getCitizenGraphData } from '../api/graph';
 import useGraphInfo from '../hook/GraphInfoHook';
 
 const useStyles = makeStyles((theme: Theme) =>

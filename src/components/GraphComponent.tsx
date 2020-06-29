@@ -4,14 +4,11 @@ import {
   CitizenGraphData,
   CitizenNode,
   CitizenLink,
-  getCitizenGraphData,
   GraphConfig,
 } from '../api/graph';
-import { getCitizenData } from '../api/citizen';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { GraphContext } from '../context/GraphContext';
 import { Typography } from '@material-ui/core';
-import { SelectedNodeContext } from '../context/SelectedNodeContext';
 import useGraphInfo from '../hook/GraphInfoHook';
 
 /**

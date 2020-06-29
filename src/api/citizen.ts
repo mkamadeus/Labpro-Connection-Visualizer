@@ -51,7 +51,8 @@ export const getCitizenData = async (
         })
         .catch((error) => {
           // TODO : handle invalid ID
-          resolve(error);
+          console.log('Invalid ID');
+          return;
         });
     }
 

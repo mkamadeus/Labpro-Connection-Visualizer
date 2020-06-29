@@ -72,6 +72,7 @@ export const getCitizenGraphData = async (
       })
       .catch((error) => {
         console.log(error);
+        return;
       });
   });
 };
