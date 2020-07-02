@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect, useCallback } from 'react';
 import { Graph as D3Graph } from 'react-d3-graph';
 import {
   CitizenGraphData,
@@ -46,43 +46,61 @@ const GraphComponent = () => {
   const { expandNode } = useGraph();
   const { graphNodes, graphLinks } = useContext(GraphContext);
 
-  const Graph = () => {
-    return (
-      <div className={classes.graphRoot}>
-        <div className={classes.graphContainer}>
-          <D3Graph
-            id={'graph'}
-            data={
-              {
-                nodes: graphNodes as CitizenNode[],
-                links: graphLinks as CitizenLink[],
-              } as CitizenGraphData
-            }
-            config={GraphConfig}
-            onClickNode={expandNode}
-          />
-        </div>
-      </div>
-    );
-  };
-
-  const EmptyGraph = () => {
-    return (
-      <div className={classes.graphRoot}>
-        <div className={classes.graphContainer}>
-          <Typography
-            className={classes.italicText}
-            variant="subtitle1"
-            color="textSecondary"
-          >
-            Search for an ID to preview the graph.
-          </Typography>
-        </div>
-      </div>
-    );
-  };
-
   return graphNodes!.length > 0 ? <Graph /> : <EmptyGraph />;
+};
+
+const Graph = () => {
+  // Stylesheet
+  const classes = useStyles();
+  // Graph Hook
+  const { expandNode } = useGraph();
+  const { graphNodes, graphLinks } = useContext(GraphContext);
+  const [graphData, setGraphData] = useState<CitizenGraphData>({
+    nodes: graphNodes as CitizenNode[],
+    links: graphLinks as CitizenLink[],
+  });
+
+  const constructGraphData = useCallback(async () => {
+    setGraphData({
+      nodes: graphNodes as CitizenNode[],
+      links: graphLinks as CitizenLink[],
+    });
+  }, [setGraphData, graphNodes, graphLinks]);
+
+  useEffect(() => {
+    constructGraphData();
+  }, [constructGraphData]);
+
+  return (
+    <div className={classes.graphRoot}>
+      <div className={classes.graphContainer}>
+        <D3Graph
+          id={'graph'}
+          data={graphData}
+          config={GraphConfig}
+          onClickNode={expandNode}
+        />
+      </div>
+    </div>
+  );
+};
+
+const EmptyGraph = () => {
+  // Stylesheet
+  const classes = useStyles();
+  return (
+    <div className={classes.graphRoot}>
+      <div className={classes.graphContainer}>
+        <Typography
+          className={classes.italicText}
+          variant="subtitle1"
+          color="textSecondary"
+        >
+          Search for an ID to preview the graph.
+        </Typography>
+      </div>
+    </div>
+  );
 };
 
 export default GraphComponent;
