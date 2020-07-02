@@ -47,17 +47,10 @@ export const nodeReducer: GraphNodeReducer = (
 ) => {
   switch (action.type) {
     case 'ADD_NODES':
-      let duplicated = [...state, ...(action.nodes as CitizenNode[])];
-      let resultMap = new Map();
-      let result: CitizenNode[] = [];
-      for (let i = 0; i < duplicated.length; i++) {
-        if (!resultMap.has(duplicated[i].id)) {
-          resultMap.set(duplicated[i].id, duplicated[i]);
-          result.push(duplicated[i]);
-        }
-      }
-
-      return result;
+      let result = [...state, ...(action.nodes as CitizenNode[])];
+      return result.filter(
+        (value, index) => index === result.findIndex((e) => e.id === value.id)
+      );
     case 'REMOVE_ALL':
       return [];
     default:
@@ -76,19 +69,14 @@ export const linkReducer: GraphLinkReducer = (
 ) => {
   switch (action.type) {
     case 'ADD_LINKS':
-      let duplicated = [...state, ...(action.links as CitizenLink[])];
-      let resultMap = new Map();
-      let result = [];
-      for (let i = 0; i < duplicated.length; i++) {
-        if (!resultMap.has(`${duplicated[i].source},${duplicated[i].target}`)) {
-          resultMap.set(
-            `${duplicated[i].source},${duplicated[i].target}`,
-            duplicated[i]
-          );
-          result.push(duplicated[i]);
-        }
-      }
-      return result;
+      let result = [...state, ...(action.links as CitizenLink[])];
+      return result.filter(
+        (value, index) =>
+          index ===
+          result.findIndex(
+            (e) => e.source === value.source && e.target === value.target
+          )
+      );
     case 'REMOVE_ALL':
       return [];
     default:

@@ -1,4 +1,4 @@
-# Beifong-Wangky Suspect Expander &middot;![](https://github.com/mkamadeus/Labpro-Connection-Visualizer/workflows/Firebase%20Deploy/badge.svg)
+# Beifong-Wangky Suspect Expander &middot; ![](https://github.com/mkamadeus/Labpro-Connection-Visualizer/workflows/Firebase%20Deploy/badge.svg)
 
 > A cooperation between Republic City Police Department (Toph Beifong) and Wangky Chocolate Factory (Willy Wangky).
 
@@ -16,7 +16,7 @@ After cloning/downloading this repository, you must first run:
 yarn install
 ```
 
-, or...
+or
 
 ```
 npm install
@@ -30,7 +30,7 @@ After all the dependencies has finished downloaded, in your project directory yo
 yarn start
 ```
 
-, or...
+or
 
 ```
 npm start
@@ -55,7 +55,7 @@ When you are ready to use the application, you will be greeted with a simple Mat
 
 Without these libraries, this project can't be done as a whole:
 
-- React, bootstrapped with CRA (Create React App)
+- React, bootstrapped with CRA (Create React App).
 - Material UI, a React material design based component library.
 - Axios, for the implementation of a promise based HTTP requests.
 - react-d3-graph, a react component for showing a graph using d3.js by GitHub user [danielcaldas](https://github.com/danielcaldas/).
@@ -64,7 +64,7 @@ Without these libraries, this project can't be done as a whole:
 
 Wangky provided me with an API for the application to use. There are several bugs on the API that is fixed in this application, such as:
 
-- Several citizen has some duplicated friend entry, e.g citizen with ID 5.
+- Several citizen has some duplicated friend entry, e.g citizen with ID 5. Solving this issue can be done easily in both backend and frontend, but it is preferable to fix this problem on the backend side, as it will make unecessary duplicate-removal codes on the front end side.
 
 ```json
 {
@@ -91,7 +91,7 @@ Wangky provided me with an API for the application to use. There are several bug
 }
 ```
 
-- Several citizen has a listed connection with themselves, which doesn't really make sense, e.g citizen with ID 85.
+- Several citizen has a listed connection with themselves, which doesn't really make sense, e.g citizen with ID 85. Again, this problem is bettr solved on the backend side.
 
 ```json
 {

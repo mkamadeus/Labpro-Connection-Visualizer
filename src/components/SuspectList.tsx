@@ -1,48 +1,39 @@
-import React, { useState, useContext } from 'react';
+import React from 'react';
 import {
   Typography,
   Button,
-  Box,
-  Dialog,
-  DialogContent,
-  IconButton,
-  colors,
-  DialogActions,
   List,
   ListItem,
   ListItemAvatar,
   Avatar,
   ListItemText,
-  MenuItem,
-  ListItemIcon,
-  ListItemSecondaryAction,
 } from '@material-ui/core';
-import MuiDialogTitle from '@material-ui/core/DialogTitle';
-import CloseIcon from '@material-ui/icons/Close';
-import RemoveIcon from '@material-ui/icons/Remove';
 import DialogBase from './DialogBase';
-import { SuspectContext } from '../context/SuspectContext';
 import { CitizenData, ElementColors } from '../api/citizen';
+import useGraph from '../hook/GraphHook';
 
 const SuspectList = () => {
-  let suspects: CitizenData[] = [];
-  const { suspectMap, suspectMapDispatcher } = useContext(SuspectContext);
+  // Graph Hook
+  const { getSuspectArray, getSuspectGraphData } = useGraph();
 
-  for (let i = 0; i < Object.keys(suspectMap!).length; i++) {
-    suspects.push(suspectMap![Object.keys(suspectMap!)[i]]);
-  }
+  // Create suspect list
+  let suspects: CitizenData[] = getSuspectArray();
 
   return (
     <DialogBase
       action={'Open suspect list'}
       title={'Suspects'}
-      // button={<button></button>}
+      button={
+        <Button onClick={getSuspectGraphData} disabled={suspects.length === 0}>
+          Show Suspect Graph
+        </Button>
+      }
     >
       <List dense>
         {suspects.length !== 0 ? (
           suspects.map((citizen: CitizenData) => {
             return (
-              <ListItem key={`citizen_${citizen.id}`} divider>
+              <ListItem key={`citizen_${citizen.id}`}>
                 <ListItemAvatar>
                   <Avatar
                     style={{
@@ -58,18 +49,6 @@ const SuspectList = () => {
                   secondaryTypographyProps={{ variant: 'caption' }}
                   secondary={`ID: #${citizen.id}`}
                 />
-                <ListItemSecondaryAction>
-                  <IconButton
-                    onClick={() =>
-                      suspectMapDispatcher!({
-                        type: 'REMOVE_SUSPECT',
-                        id: citizen.id,
-                      })
-                    }
-                  >
-                    <RemoveIcon />
-                  </IconButton>
-                </ListItemSecondaryAction>
               </ListItem>
             );
           })

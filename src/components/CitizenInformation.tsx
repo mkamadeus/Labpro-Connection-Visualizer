@@ -10,19 +10,19 @@ import {
   CardActions,
 } from '@material-ui/core';
 import { ElementColors, getCitizenData } from '../api/citizen';
-import useGraphInfo from '../hook/GraphInfoHook';
-import useSuspectInfo from '../hook/SuspectInfoHook';
+import useGraph from '../hook/GraphHook';
 
 const CitizenInformation = () => {
-  const { isSelectedSuspected, suspectButtonAction } = useSuspectInfo();
   const {
     selectedNode,
     setSelectedNode,
     expandNode,
     isNodeExpanded,
-  } = useGraphInfo();
+    isSelectedSuspected,
+    toggleSuspectStatus,
+  } = useGraph();
 
-  const handleClick = async (event: React.MouseEvent<HTMLElement>) => {
+  const handleClick = async (_event: React.MouseEvent<HTMLElement>) => {
     await expandNode!(selectedNode?.id as string);
   };
 
@@ -56,7 +56,7 @@ const CitizenInformation = () => {
           <CardActions>
             <Button
               variant="outlined"
-              onClick={suspectButtonAction}
+              onClick={toggleSuspectStatus}
               color="primary"
             >
               {isSelectedSuspected() ? 'Remove' : 'Save'}

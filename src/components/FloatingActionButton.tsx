@@ -9,9 +9,9 @@ import {
 } from '@material-ui/core';
 import PeopleIcon from '@material-ui/icons/People';
 import SuspectList from './SuspectList';
-import useGraphInfo from '../hook/GraphInfoHook';
 import HelpDialog from './HelpDialog';
 import { ThemeContext } from '../context/ThemeContext';
+import useGraph from '../hook/GraphHook';
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -24,15 +24,24 @@ const useStyles = makeStyles((theme: Theme) => {
 });
 
 const FloatingActionButton = () => {
+  // State
   const [anchor, setAnchor] = useState<null | HTMLElement>(null);
-  const classes = useStyles();
-  const { clearGraph } = useGraphInfo();
+
+  // Graph Hook
+  const { clearGraph } = useGraph();
+
+  // Theme Context
   const toggleTheme = useContext(ThemeContext);
 
+  // Stylesheet
+  const classes = useStyles();
+
+  // Function for handling fab click
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchor(event.currentTarget);
   };
 
+  // Function for handling fab close
   const handleClose = () => {
     setAnchor(null);
   };

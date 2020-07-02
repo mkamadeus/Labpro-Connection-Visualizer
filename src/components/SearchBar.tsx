@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { InputBase, Theme } from '@material-ui/core';
 import { makeStyles, createStyles, fade } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
-import useGraphInfo from '../hook/GraphInfoHook';
+import useGraph from '../hook/GraphHook';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -51,7 +51,7 @@ const SearchBar = () => {
   const [query, setQuery] = useState('');
 
   // Custom Hook
-  const { expandNode } = useGraphInfo();
+  const { expandNode } = useGraph();
 
   const handleSearch = async (event: React.KeyboardEvent<HTMLElement>) => {
     if (event.key === 'Enter') {
