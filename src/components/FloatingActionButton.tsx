@@ -23,6 +23,10 @@ const useStyles = makeStyles((theme: Theme) => {
   });
 });
 
+/**
+ * `FloatingActionButton` component.
+ * The component for the floating button for doing some actions.
+ */
 const FloatingActionButton = () => {
   // State
   const [anchor, setAnchor] = useState<null | HTMLElement>(null);

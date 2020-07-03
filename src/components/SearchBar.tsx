@@ -43,6 +43,10 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
+/**
+ * `SearchBar` component.
+ * The component that holds the logic and definition for the search bar inside the app bar.
+ */
 const SearchBar = () => {
   // Stylesheet
   const classes = useStyles();

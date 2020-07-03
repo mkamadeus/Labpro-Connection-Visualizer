@@ -1,21 +1,34 @@
 import React, { useState } from 'react';
 import { CitizenData } from '../api/citizen';
 
+/**
+ * SelectedNodeContext props definition.
+ */
 export type SelectedNodeContextProps = {
   selectedNode: CitizenData;
   setSelectedNode: (data: CitizenData | undefined) => void;
 };
 
-export type SelectedNodeContextProvierProps = {
+/**
+ * SelectedNodContextProvider props definition.
+ */
+export type SelectedNodeContextProviderProps = {
   children?: React.ReactNode;
 };
 
+/**
+ * SelectedNodContext context definition.
+ */
 export const SelectedNodeContext = React.createContext<
   Partial<SelectedNodeContextProps>
 >({});
 
+/**
+ * `SelectedNodContextProvider` component.
+ * @param props TProps supplied to the component, with the type of SelectedNodeContextProviderProps
+ */
 export const SelectedNodeContextProvider = (
-  props: SelectedNodeContextProvierProps
+  props: SelectedNodeContextProviderProps
 ) => {
   const [selectedNode, setSelectedNode] = useState<CitizenData | undefined>();
 

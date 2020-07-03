@@ -1,15 +1,9 @@
-import React, { useContext, useState, useEffect, useCallback } from 'react';
+import React from 'react';
 import { Graph as D3Graph } from 'react-d3-graph';
-import {
-  CitizenGraphData,
-  CitizenNode,
-  CitizenLink,
-  GraphConfig,
-} from '../api/graph';
+import { CitizenNode, CitizenLink } from '../api/graph';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 import useGraph from '../hook/GraphHook';
-import { GraphContext } from '../context/GraphContext';
 
 /**
  * Stylesheet definition.
@@ -28,6 +22,7 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: 'center',
       height: '100%',
       backgroundColor: theme.palette.background.paper,
+      borderRadius: theme.shape.borderRadius,
     },
     italicText: {
       fontStyle: 'italic',
@@ -37,47 +32,58 @@ const useStyles = makeStyles((theme: Theme) =>
 
 /**
  * `GraphComponent` Component.
+ * The graph component created using the `react-d3-graph` library. Only showing graph when there's at least 1 node.
  */
 const GraphComponent = () => {
-  // Stylesheet
-  const classes = useStyles();
-
   // Graph Hook
-  const { expandNode } = useGraph();
-  const { graphNodes, graphLinks } = useContext(GraphContext);
+  const { graphNodes } = useGraph();
 
   return graphNodes!.length > 0 ? <Graph /> : <EmptyGraph />;
 };
 
+/**
+ * `Graph` component, used in `GraphComponent`.
+ * The actual graph component.
+ */
 const Graph = () => {
   // Stylesheet
   const classes = useStyles();
   // Graph Hook
-  const { expandNode } = useGraph();
-  const { graphNodes, graphLinks } = useContext(GraphContext);
-  const [graphData, setGraphData] = useState<CitizenGraphData>({
-    nodes: graphNodes as CitizenNode[],
-    links: graphLinks as CitizenLink[],
-  });
-
-  const constructGraphData = useCallback(async () => {
-    setGraphData({
-      nodes: graphNodes as CitizenNode[],
-      links: graphLinks as CitizenLink[],
-    });
-  }, [setGraphData, graphNodes, graphLinks]);
-
-  useEffect(() => {
-    constructGraphData();
-  }, [constructGraphData]);
+  const { graphNodes, graphLinks, expandNode } = useGraph();
 
   return (
     <div className={classes.graphRoot}>
-      <div className={classes.graphContainer}>
+      <div className={classes.graphContainer} id={'graphContainer'}>
         <D3Graph
           id={'graph'}
-          data={graphData}
-          config={GraphConfig}
+          data={{
+            nodes: graphNodes as CitizenNode[],
+            links: graphLinks as CitizenLink[],
+          }}
+          config={{
+            height: document.getElementById('graphContainer')?.offsetHeight,
+            width: document.getElementById('graphContainer')?.offsetWidth,
+            directed: true,
+            staticGraph: false,
+            automaticRearrangeAfterDropNode: true,
+            d3: {
+              gravity: -50,
+              linkLength: 50,
+              linkStrength: 1,
+              alphaTarget: 1,
+              disableLinkForce: false,
+            },
+            link: {
+              opacity: 0.5,
+              type: 'CURVE_SMOOTH',
+              strokeWidth: 1,
+            },
+            node: {
+              size: 150,
+            },
+            highlightOpacity: 0.2,
+            nodeHighlightBehavior: true,
+          }}
           onClickNode={expandNode}
         />
       </div>
@@ -85,9 +91,14 @@ const Graph = () => {
   );
 };
 
+/**
+ * `EmptyGraph` component.
+ * The `EmptyGraph` is a placeholder for when the graph has no nodes.
+ */
 const EmptyGraph = () => {
   // Stylesheet
   const classes = useStyles();
+
   return (
     <div className={classes.graphRoot}>
       <div className={classes.graphContainer}>

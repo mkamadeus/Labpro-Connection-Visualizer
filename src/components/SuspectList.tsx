@@ -12,6 +12,10 @@ import DialogBase from './DialogBase';
 import { CitizenData, ElementColors } from '../api/citizen';
 import useGraph from '../hook/GraphHook';
 
+/**
+ * `SuspectList` component.
+ * This component shows the list of suspects that the user have saved before.
+ */
 const SuspectList = () => {
   // Graph Hook
   const { getSuspectArray, getSuspectGraphData } = useGraph();

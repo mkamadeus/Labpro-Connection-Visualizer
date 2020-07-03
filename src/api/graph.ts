@@ -1,9 +1,4 @@
-import {
-  GraphNode,
-  GraphLink,
-  GraphData,
-  GraphConfiguration,
-} from 'react-d3-graph';
+import { GraphNode, GraphLink, GraphData } from 'react-d3-graph';
 import { CitizenData, getCitizenData, ElementColors } from './citizen';
 
 /**
@@ -75,35 +70,4 @@ export const getCitizenGraphData = async (
         return;
       });
   });
-};
-
-/**
- * Graph configuration for the graph component.
- */
-export const GraphConfig: Partial<GraphConfiguration<
-  CitizenNode,
-  CitizenLink
->> = {
-  height: 600,
-  width: 300,
-  directed: true,
-  staticGraph: false,
-  automaticRearrangeAfterDropNode: true,
-  d3: {
-    gravity: -50,
-    linkLength: 50,
-    linkStrength: 1,
-    alphaTarget: 1,
-    disableLinkForce: false,
-  },
-  link: {
-    opacity: 0.5,
-    type: 'CURVE_SMOOTH',
-    strokeWidth: 1,
-  },
-  node: {
-    size: 150,
-  },
-  highlightOpacity: 0.2,
-  nodeHighlightBehavior: true,
 };

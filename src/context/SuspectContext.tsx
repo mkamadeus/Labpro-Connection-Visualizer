@@ -28,6 +28,9 @@ export const SuspectContext = React.createContext<Partial<SuspectContextProps>>(
   {}
 );
 
+/**
+ * SuspectContextProvider Component.
+ */
 export const SuspectContextProvider = (props: SuspectContextProviderProps) => {
   const [suspectMap, suspectMapDispatcher] = useReducer<
     SuspectReducer,

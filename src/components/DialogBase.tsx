@@ -34,6 +34,11 @@ type DialogBaseProps = {
   children?: React.ReactNode;
 };
 
+/**
+ * `DialogBase` component.
+ * The component that defines the base of all dialogs.
+ * @param props The props supplied to the component, having type DialogBaseProps
+ */
 const DialogBase = (props: DialogBaseProps) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);

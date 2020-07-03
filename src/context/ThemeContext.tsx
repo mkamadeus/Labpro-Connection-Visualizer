@@ -5,12 +5,21 @@ import {
   MuiThemeProvider,
 } from '@material-ui/core';
 
+/**
+ * SuspectContext context definition.
+ */
 export const ThemeContext = React.createContext<() => void>(() => {});
 
-type ThemeContextProviderProps = {
+/**
+ * SuspectContextProvider props definition.
+ */
+export type ThemeContextProviderProps = {
   children: React.ReactNode;
 };
 
+/**
+ * SuspectContextProvider Component.
+ */
 export const ThemeContextProvider = (props: ThemeContextProviderProps) => {
   const [theme, setTheme] = useState({
     palette: {

@@ -18,16 +18,20 @@ const useStyles = makeStyles((theme: Theme) => {
   });
 });
 
+/**
+ * `SearchComponent` component.
+ * The component that holds information for the top application bar.
+ */
 const SearchComponent = () => {
   const classes = useStyles();
   return (
     <>
-      <AppBar>
+      <AppBar position="static">
         <Toolbar className={classes.toolbar}>
           <SearchBar />
         </Toolbar>
       </AppBar>
-      <Toolbar className={classes.toolbar} style={{ content: '' }} />
+      {/* <Toolbar className={classes.toolbar} style={{ content: '' }} /> */}
     </>
   );
 };

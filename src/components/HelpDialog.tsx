@@ -20,6 +20,10 @@ const useStyles = makeStyles((theme: Theme) => {
   });
 });
 
+/**
+ * `HelpDialog` component.
+ * Holds place for the help dialog shown.
+ */
 const HelpDialog = () => {
   const classes = useStyles();
 
@@ -70,7 +74,10 @@ const HelpDialog = () => {
             Type in a valid citizen ID into the search box, then press Enter.
           </li>
           <li>
-            Preview a graph symbolizing each citizen's link with each other.
+            Preview a graph symbolizing each citizen's link with each other. You
+            can zoom in or zoom out the graph for better viewing experience by
+            using the scroll wheel or by doing pinching gestures for mobile
+            users.
           </li>
           <li>
             Preview a citizen's information; their bending abilities, citizen
@@ -84,12 +91,20 @@ const HelpDialog = () => {
           <li>
             Clear the graph preview along with the citizen information preview.
           </li>
+          <li>
+            Saving citizen to the suspect list and showing the graphs with only
+            the suspects.{' '}
+            <span style={{ fontStyle: 'italic' }}>
+              (Note: suspects can't be expanded in order to prevent confusion.
+              Clear the graph before using it again.)
+            </span>
+          </li>
         </ul>
       </Typography>
       <Typography variant="h6">More</Typography>
       <Typography variant="body2" gutterBottom>
-        Well, that's about it. Below are several links that is important to this
-        project.
+        Well, that's about it. Below are several links related to this project:
+        the repository and the specification.
       </Typography>
       <Grid container spacing={2}>
         {links.map((value) => {
@@ -98,7 +113,7 @@ const HelpDialog = () => {
               <a href={value.link}>
                 <FontAwesomeIcon
                   icon={value.icon}
-                  size="2x"
+                  size="3x"
                   color={value.color}
                 />
               </a>

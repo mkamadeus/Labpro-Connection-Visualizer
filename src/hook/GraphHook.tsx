@@ -1,17 +1,15 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { GraphContext } from '../context/GraphContext';
 import { SelectedNodeContext } from '../context/SelectedNodeContext';
 import { SuspectContext } from '../context/SuspectContext';
 import { getCitizenData, CitizenData, ElementColors } from '../api/citizen';
-import {
-  getCitizenGraphData,
-  CitizenGraphData,
-  CitizenNode,
-  CitizenLink,
-} from '../api/graph';
+import { getCitizenGraphData, CitizenNode, CitizenLink } from '../api/graph';
 
+/**
+ * useGraph custom React Hook to separate functions in one file.
+ */
 const useGraph = () => {
-  // Context
+  // Context definition
   const {
     graphLinks,
     graphNodes,
@@ -147,7 +145,6 @@ const useGraph = () => {
     clearGraph();
     graphNodesDispatcher!({ type: 'ADD_NODES', nodes: nodes });
     graphLinksDispatcher!({ type: 'ADD_LINKS', links: links });
-    // console.log(getSuspectArray());
   };
 
   return {

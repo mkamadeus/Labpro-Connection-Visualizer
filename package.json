@@ -32,7 +32,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint-fix": "eslint src/**/*.tsx --fix"
+    "docs": "typedoc --out docs src"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -49,5 +49,7 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "typedoc": "^0.17.8"
+  }
 }
